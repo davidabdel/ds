@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distress Signals — NSW Winding-Up Intelligence, Before the Hearing</title>
+<meta name="description" content="Every NSW winding-up application, enriched and on your desk by 7am — while the company can still be saved. Three seats per practice segment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#122442; --navy2:#1B3358; --gold:#C9A227; --gold-soft:#E7D9A8;
+    --paper:#F7F8FA; --ink:#1A1A1A; --grey:#6B7280; --line:#D8DDE6;
+    --live:#1E7A46; --petition:#B42318;
+    --display:'Archivo',Arial,sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--serif);color:var(--ink);background:var(--paper);line-height:1.6}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  h1,h2{font-family:var(--display);font-weight:900;line-height:1.05;letter-spacing:-.01em}
+  .btn{display:inline-block;font-family:var(--display);font-weight:700;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:16px 28px;border-radius:4px;transition:transform .15s ease, box-shadow .15s ease}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+  .btn-gold{background:var(--gold);color:var(--navy)}
+  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,162,39,.35)}
+  .btn-ghost{border:1px solid rgba(255,255,255,.35);color:#fff}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* ---------- top bar ---------- */
+  .topbar{background:var(--navy);border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .brand-name{font-family:var(--display);font-weight:900;font-size:1.05rem;letter-spacing:.14em;color:#fff}
+  .brand-name span{color:var(--gold)}
+  .intake{font-family:var(--mono);font-size:.72rem;color:var(--gold-soft);letter-spacing:.04em}
+  .intake b{color:var(--gold)}
+
+  /* logo mark */
+  .mark{width:44px;height:44px;flex:none}
+  @keyframes ping{0%{opacity:1}70%{opacity:.15}100%{opacity:1}}
+  .mark .a1{animation:ping 2.4s ease-in-out infinite}
+  .mark .a2{animation:ping 2.4s ease-in-out .35s infinite}
+  .mark .a3{animation:ping 2.4s ease-in-out .7s infinite}
+  @media (prefers-reduced-motion: reduce){.mark .a1,.mark .a2,.mark .a3{animation:none}}
+
+  /* ---------- hero ---------- */
+  .hero{background:linear-gradient(180deg,var(--navy) 0%,#0D1B33 100%);color:#fff;overflow:hidden;position:relative}
+  .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:5px;background:var(--gold)}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:88px;padding-bottom:104px}
+  .hero h1{font-size:clamp(2.2rem,4.6vw,3.5rem);color:#fff}
+  .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero p.lede{margin:22px 0 10px;font-size:1.15rem;color:#C7D0DF;max-width:34rem}
+  .hero .fact{font-family:var(--mono);font-size:.78rem;color:#8FA0B8;margin-bottom:34px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+
+  /* the product replica card — signature element */
+  .dossier{position:relative}
+  .dossier::before{content:"";position:absolute;inset:14px -14px -14px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:8px}
+  .lead-card{position:relative;background:#fff;color:var(--ink);border-radius:8px;box-shadow:0 30px 60px rgba(0,0,0,.45);padding:26px 26px 20px;border-left:5px solid var(--petition)}
+  .lead-tags{position:absolute;top:22px;right:22px;display:flex;gap:8px}
+  .pill{font-family:var(--display);font-weight:700;font-size:.62rem;letter-spacing:.08em;padding:5px 12px;border-radius:99px;color:#fff}
+  .pill-red{background:var(--petition)} .pill-live{background:var(--live)}
+  .lead-card h3{font-family:var(--display);font-weight:900;font-size:1.15rem;color:var(--navy);letter-spacing:.01em;padding-right:150px}
+  .lead-sub{font-family:var(--mono);font-size:.7rem;color:var(--grey);margin:6px 0 18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+  .f label{display:block;font-family:var(--display);font-weight:700;font-size:.58rem;letter-spacing:.14em;color:var(--grey);text-transform:uppercase}
+  .f div{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--ink);margin-top:2px}
+  .f .hot{color:var(--petition)}
+  .why{margin-top:18px;background:var(--paper);border-radius:6px;padding:10px 14px;font-size:.8rem}
+  .why b{font-family:var(--display);font-size:.6rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-right:8px}
+  .stamp{position:absolute;bottom:64px;right:-6px;transform:rotate(-8deg);font-family:var(--display);font-weight:900;font-size:.7rem;letter-spacing:.2em;color:var(--live);border:2px solid var(--live);border-radius:4px;padding:5px 10px;opacity:.85;background:rgba(255,255,255,.9)}
+
+  /* ---------- sections ---------- */
+  section{padding:88px 0}
+  .sec-head{max-width:44rem;margin-bottom:48px}
+  .sec-head h2{font-size:clamp(1.6rem,3vw,2.3rem);color:var(--navy);margin-top:10px}
+  .sec-head p{margin-top:14px;color:var(--grey)}
+
+  /* window timeline */
+  .window{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:8px}
+  .steps::before{content:"";position:absolute;top:11px;left:12%;right:12%;height:2px;background:var(--line)}
+  .step{text-align:center;padding:0 14px;position:relative}
+  .dot{width:22px;height:22px;border-radius:50%;margin:0 auto 14px;position:relative;z-index:1;border:5px solid #fff;box-shadow:0 0 0 1px var(--line)}
+  .step h4{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
+  .step p{font-size:.85rem;color:var(--grey);margin-top:6px}
+  .step .when{font-family:var(--mono);font-size:.68rem;margin-top:8px;display:block}
+  .s-you .dot{background:var(--gold)} .s-you .when{color:var(--gold);font-weight:600}
+  .s-them .dot{background:var(--navy2)} .s-end .dot{background:var(--petition)} .s-start .dot{background:var(--grey)}
+
+  /* difference table */
+  .diff{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  th,td{padding:16px 18px;text-align:left;font-size:.9rem;border-bottom:1px solid var(--line)}
+  thead th{font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+  thead th:first-child{width:26%}
+  th.us{background:var(--navy);color:var(--gold)}
+  td.us{background:#FBF7EA;font-weight:600}
+  tbody th{font-family:var(--display);font-weight:700;font-size:.75rem;letter-spacing:.06em;color:var(--navy);text-transform:uppercase}
+  td{color:var(--grey)} td.us{color:var(--ink)}
+  tr:last-child th,tr:last-child td{border-bottom:none}
+
+  /* fields */
+  .fields{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .field-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}
+  .field-card h4{font-family:var(--display);font-weight:700;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)}
+  .field-card p{font-size:.88rem;color:var(--grey);margin-top:8px}
+  .field-card .tag{font-family:var(--mono);font-size:.62rem;color:var(--gold);letter-spacing:.06em}
+
+  /* pricing */
+  .pricing{background:var(--navy);color:#fff}
+  .price-box{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
+  .price-box h2{color:#fff;font-size:clamp(1.6rem,3vw,2.2rem)}
+  .price-box .terms{margin-top:18px;color:#C7D0DF}
+  .terms li{margin:10px 0;list-style:none;padding-left:26px;position:relative;font-size:.95rem}
+  .terms li::before{content:"";position:absolute;left:0;top:9px;width:12px;height:12px;background:var(--gold);border-radius:2px}
+  .price-card{background:rgba(255,255,255,.05);border:1px solid rgba(201,162,39,.5);border-radius:10px;padding:36px;text-align:center}
+  .price-card .anchor-price{font-family:var(--display);font-weight:700;font-size:1.15rem;color:#8FA0B8;text-decoration:line-through;text-decoration-color:var(--petition);text-decoration-thickness:2px;margin:14px 0 2px}
+  .price-card .anchor-price span{font-family:var(--mono);font-size:.6rem;text-decoration:none;letter-spacing:.08em}
+  .price-card .amt{font-family:var(--display);font-weight:900;font-size:3rem;color:var(--gold)}
+  .price-card .per{font-family:var(--mono);font-size:.75rem;color:#8FA0B8;margin-bottom:6px}
+  .price-card .seat{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:14px 0 24px}
+  .foot-note{font-family:var(--mono);font-size:.68rem;color:#8FA0B8;margin-top:16px}
+
+  footer{background:#0D1B33;color:#8FA0B8;padding:34px 0;font-size:.78rem}
+  footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+
+  /* ---------- opt-in form ---------- */
+  .optin{background:#fff;border-top:1px solid var(--line)}
+  .optin .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+  .optin h2{font-size:clamp(1.5rem,2.6vw,2rem);color:var(--navy);margin-top:10px}
+  .optin .sec-copy{margin-top:14px;color:var(--grey)}
+  .form-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:32px}
+  .form-row{margin-bottom:18px}
+  .form-row label{display:block;font-family:var(--display);font-weight:700;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin-bottom:7px}
+  .form-row input,.form-row select{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--serif);font-size:.95rem;color:var(--ink)}
+  .form-row input:focus,.form-row select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.2)}
+  .form-row select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%23122442' stroke-width='2' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
+  .form-card .btn{width:100%;border:none;cursor:pointer;font-size:.9rem}
+  .form-note{font-family:var(--mono);font-size:.66rem;color:var(--grey);margin-top:14px;text-align:center}
+  .form-msg{display:none;margin-top:16px;padding:14px;border-radius:6px;font-size:.88rem;text-align:center}
+  .form-msg.ok{display:block;background:#EAF5EE;color:var(--live);border:1px solid var(--live)}
+  .form-msg.err{display:block;background:#FBEDEB;color:var(--petition);border:1px solid var(--petition)}
+
+  @media(max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;padding-top:56px;padding-bottom:72px}
+    .optin .wrap{grid-template-columns:1fr}
+    .dossier{max-width:520px}
+    .steps{grid-template-columns:1fr 1fr;gap:32px 0}
+    .steps::before{display:none}
+    .fields{grid-template-columns:1fr}
+    .price-box{grid-template-columns:1fr}
+    .lead-card h3{padding-right:0}
+    .lead-tags{position:static;margin-bottom:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Distress Signals home">
+      <svg class="mark" viewBox="0 0 140 140" role="img" aria-label="Distress Signals mark">
+        <circle cx="70" cy="70" r="58" fill="#122442"/>
+        <circle cx="70" cy="70" r="58" fill="none" stroke="#C9A227" stroke-width="4"/>
+        <circle cx="52" cy="82" r="7" fill="#C9A227"/>
+        <path class="a1" d="M 63 71 A 15.6 15.6 0 0 1 67.6 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round"/>
+        <path class="a2" d="M 71 63 A 26.9 26.9 0 0 1 78.9 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round" opacity=".75"/>
+        <path class="a3" d="M 79 55 A 38.2 38.2 0 0 1 90.2 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+      </svg>
+      <span class="brand-name">DISTRESS <span>SIGNALS</span></span>
+    </a>
+    <div class="intake">FOUNDERS INTAKE: <b>NSW — 3 SEATS PER SEGMENT</b></div>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">NSW Winding-Up Intelligence</div>
+      <h1>The court knows first.<br>Then <em>you</em> do.</h1>
+      <p class="lede">Every winding-up application filed against a NSW company — who's suing them, the debt type, the hearing date, and the contact details — enriched and on your desk by 7am. While the company can still be saved.</p>
+      <div class="fact">SOURCE: ASIC PUBLISHED NOTICES (s465A) · FEDERAL COURT &amp; SUPREME COURT NSW · PUBLIC RECORD ONLY</div>
+      <div class="cta-row">
+        <a class="btn btn-gold" href="#optin">Get tomorrow's brief — free</a>
+        <a class="btn btn-ghost" href="#optin">Reserve a founders seat</a>
+      </div>
+    </div>
+    <div class="dossier" aria-hidden="true">
+      <div class="lead-card">
+        <div class="lead-tags"><span class="pill pill-red">ATO PETITION</span><span class="pill pill-live">LIVE</span></div>
+        <h3>SAMPLE TRADING CO PTY LTD</h3>
+        <div class="lead-sub">ACN 000 000 000 · PARRAMATTA NSW · HOSPITALITY</div>
+        <div class="grid2">
+          <div class="f"><label>Petitioning creditor</label><div>Deputy Commissioner of Taxation</div></div>
+          <div class="f"><label>Court / Action no.</label><div>Supreme Court NSW — 2026/0009XXXX</div></div>
+          <div class="f"><label>Hearing date</label><div class="hot">7 August 2026 — 35 days out</div></div>
+          <div class="f"><label>GST status (ABR)</label><div>Registered</div></div>
+          <div class="f"><label>Business phone</label><div>02 8XXX XXXX</div></div>
+          <div class="f"><label>Website</label><div>Live — hiring on Seek</div></div>
+        </div>
+        <div class="why"><b>Why it matters</b>Full advisory window open. ATO petition — check director's DPN exposure.</div>
+      </div>
+      <div class="stamp">COURT VERIFIED</div>
+    </div>
+  </div>
+</header>
+
+<section class="window">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The Window</div>
+      <h2>A winding-up application is not the end of a company. It's a six-week clock.</h2>
+      <p>Between filing and hearing, a company can still negotiate, refinance, restructure or appoint. After the hearing, the only professional with work is the liquidator. Everything we do is about which side of that line you're on.</p>
+    </div>
+    <div class="steps">
+      <div class="step s-start"><div class="dot"></div><h4>Statutory demand</h4><p>21 days to comply. Most don't.</p><span class="when">DAY −21</span></div>
+      <div class="step s-you"><div class="dot"></div><h4>Application filed</h4><p>You're alerted — full brief by 7am.</p><span class="when">DAY 0 — YOU ARE HERE</span></div>
+      <div class="step s-them"><div class="dot"></div><h4>Word spreads</h4><p>The market catches up days or weeks later.</p><span class="when">DAY 3–21</span></div>
+      <div class="step s-end"><div class="dot"></div><h4>Hearing</h4><p>Order made. Window closed.</p><span class="when">DAY ~42</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why We're Different</div>
+      <h2>Everyone else sells defence. We sell offence.</h2>
+      <p>Credit monitors exist to protect your ledger from dying companies. Industry databases report on files after they're won. We exist to fill your pipeline — before the hearing.</p>
+    </div>
+    <div class="diff">
+      <table>
+        <thead>
+          <tr><th></th><th class="us">Distress Signals</th><th>Credit monitoring platforms</th><th>Weekly industry databases</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Built for</th><td class="us">Winning new clients</td><td>Protecting your existing ledger</td><td>Industry news &amp; league tables</td></tr>
+          <tr><th scope="row">Timing</th><td class="us">Daily, 7am — hearing still pending</td><td>Alerts on companies you already watch</td><td>Weekly, often post-appointment</td></tr>
+          <tr><th scope="row">Enrichment</th><td class="us">Creditor classified, GST status, contacts, trading signal</td><td>Credit scores on your customers</td><td>Raw court rows</td></tr>
+          <tr><th scope="row">Who gets it</th><td class="us">3 seats per practice segment</td><td>Anyone who subscribes</td><td>Anyone who subscribes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">On Every Card</div>
+      <h2>Not a notice. A brief.</h2>
+    </div>
+    <div class="fields">
+      <div class="field-card"><span class="tag">CLASSIFIED</span><h4>Who's suing — and what that means</h4><p>ATO, icare, landlord or trade creditor. The petitioner tells you the debt type, and the debt type tells you which conversation to have.</p></div>
+      <div class="field-card"><span class="tag">VERIFIED</span><h4>The court file</h4><p>Court, action number and hearing date, checkable in one click. Public record only — no scraped guesses, no grey data.</p></div>
+      <div class="field-card"><span class="tag">COUNTDOWN</span><h4>Days to hearing</h4><p>Live leads sorted first, every edition. You always know how much window is left.</p></div>
+      <div class="field-card"><span class="tag">REACHABLE</span><h4>Business contacts</h4><p>Website, phone and public email from the company's own listing — the call is ready to make.</p></div>
+      <div class="field-card"><span class="tag">SIGNAL</span><h4>Still trading, or dark?</h4><p>GST registration status and a trading signal — a live site and active hiring reads very differently to a cancelled registration.</p></div>
+      <div class="field-card"><span class="tag">ACTIONABLE</span><h4>Why it matters</h4><p>One line per lead on the opportunity — DPN exposure, restructure candidacy, refinance headroom — written for the person making the call.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap price-box">
+    <div>
+      <div class="eyebrow">Founders Intake</div>
+      <h2>Three seats per segment. That's the product.</h2>
+      <ul class="terms">
+        <li>Advisory, legal and lending segments never compete for the same seat — but within your segment, only three firms in NSW will ever hold one.</li>
+        <li>Delivered every business day by 7am, with a forward book of all upcoming hearings.</li>
+        <li>First week free. Judge it on the leads, not the brochure. Cancel any time.</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <div class="per">FOUNDERS PRICING — NSW FEED</div>
+      <div class="anchor-price">$1,997 <span>/ MO AT GENERAL RELEASE</span></div>
+      <div class="amt">$1,490</div>
+      <div class="per">PER MONTH — FOUNDERS ONLY</div>
+      <div class="seat">3 seats per practice segment</div>
+      <a class="btn btn-gold" href="#optin">Reserve your segment</a>
+      <div class="foot-note">Founders rate locked for 12 months. Rises to $1,997/mo when founders intake closes.</div>
+    </div>
+  </div>
+</section>
+
+<section class="optin" id="optin">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Founders Intake</div>
+      <h2>Get tomorrow's brief. Judge it on the leads.</h2>
+      <p class="sec-copy">Leave your details and tomorrow morning's edition lands in your inbox at 7am — every new NSW winding-up application, enriched and classified. First week free. If it's not worth a call back, you'll never hear from us again.</p>
+      <p class="sec-copy">Seats are allocated per segment, first come. Selecting your segment lets us confirm whether one is still open.</p>
+    </div>
+    <div class="form-card">
+      <form id="optinForm" novalidate>
+        <div class="form-row">
+          <label for="f-name">Full name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="e.g. Sarah Chen">
+        </div>
+        <div class="form-row">
+          <label for="f-email">Work email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@yourfirm.com.au">
+        </div>
+        <div class="form-row">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" required placeholder="04XX XXX XXX">
+        </div>
+        <div class="form-row">
+          <label for="f-segment">Your segment</label>
+          <select id="f-segment" name="segment" required>
+            <option value="" disabled selected>Select your practice segment</option>
+            <option>Advisory &amp; Restructuring</option>
+            <option>Legal — Insolvency / Disputes</option>
+            <option>Lending &amp; Finance</option>
+            <option>Insolvency Practitioner / Liquidator</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <button class="btn btn-gold" type="submit">Send me tomorrow's brief</button>
+        <div class="form-note">FIRST WEEK FREE · NO CARD REQUIRED · CANCEL ANY TIME</div>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Same-page anchors: scroll via JS so sandboxed previews don't treat them as external links
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var target = document.querySelector(a.getAttribute("href"));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+
+  // To capture leads directly into your CRM, paste your form endpoint below
+  // (GoHighLevel inbound webhook, Formspree URL, etc). Leave blank to fall
+  // back to opening an email with the details pre-filled.
+  var FORM_ENDPOINT = "";
+  var FALLBACK_EMAIL = "hello@distresssignals.com.au";
+
+  document.getElementById("optinForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target, msg = document.getElementById("formMsg");
+    var data = {
+      name: f.name.value.trim(),
+      email: f.email.value.trim(),
+      phone: f.phone.value.trim(),
+      segment: f.segment.value,
+      source: "distress-signals-landing"
+    };
+    if (!data.name || !data.email || !data.phone || !data.segment) {
+      msg.className = "form-msg err";
+      msg.textContent = "Please complete all four fields — segment included, it's how we check seat availability.";
+      return;
+    }
+    if (FORM_ENDPOINT) {
+      var btn = f.querySelector("button"); btn.disabled = true;
+      fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        if (!r.ok) throw new Error();
+        f.reset();
+        msg.className = "form-msg ok";
+        msg.textContent = "Done — tomorrow's brief will be in your inbox by 7am.";
+      }).catch(function () {
+        msg.className = "form-msg err";
+        msg.textContent = "Something went wrong sending your details. Email " + FALLBACK_EMAIL + " and we'll set you up manually.";
+      }).finally(function () { btn.disabled = false; });
+    } else {
+      var body = "Name: " + data.name + "%0D%0AEmail: " + data.email +
+                 "%0D%0APhone: " + data.phone + "%0D%0ASegment: " + data.segment;
+      window.location.href = "mailto:" + FALLBACK_EMAIL +
+        "?subject=" + encodeURIComponent("Founders intake — " + data.segment) +
+        "&body=" + body;
+      msg.className = "form-msg ok";
+      msg.textContent = "Your email app should open with the details filled in — just hit send.";
+    }
+  });
+</script>
+
+<footer>
+  <div class="wrap">
+    <div>© Distress Signals. Information service only — not legal or financial advice.</div>
+    <div>All records sourced from public registers and verifiable by action number.</div>
+  </div>
+</footer>
+
+</body>
+</html>
