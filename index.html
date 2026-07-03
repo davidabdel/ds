@@ -81,7 +81,7 @@
   /* window timeline */
   .window{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:8px}
-  .steps::before{content:"";position:absolute;top:11px;left:12%;right:12%;height:2px;background:var(--line)}
+  .steps::before{content:"";position:absolute;top:11px;left:12%;right:12%;height:2px;background:var(--line);transform:scaleX(var(--line-draw,1));transform-origin:left center}
   .step{text-align:center;padding:0 14px;position:relative}
   .dot{width:22px;height:22px;border-radius:50%;margin:0 auto 14px;position:relative;z-index:1;border:5px solid #fff;box-shadow:0 0 0 1px var(--line)}
   .step h4{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
@@ -394,6 +394,111 @@
     <div>All records sourced from public registers and verifiable by action number.</div>
   </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  if (!window.gsap || !window.ScrollTrigger) return; // CDN blocked — page stays fully usable
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- hero entrance ---------- */
+  var intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+  intro
+    .from(".topbar", { y: -64, autoAlpha: 0, duration: .6 })
+    .from(".hero .eyebrow", { y: 24, autoAlpha: 0, duration: .5 }, "-=.2")
+    .from(".hero h1", { y: 44, autoAlpha: 0, duration: .7 }, "-=.25")
+    .from(".hero .lede", { y: 30, autoAlpha: 0, duration: .6 }, "-=.4")
+    .from(".hero .fact", { y: 20, autoAlpha: 0, duration: .5 }, "-=.35")
+    .from(".cta-row .btn", { y: 20, autoAlpha: 0, duration: .5, stagger: .12, clearProps: "transform" }, "-=.3")
+    .from(".dossier", { x: 90, autoAlpha: 0, duration: .9, ease: "power4.out" }, .4)
+    .from(".lead-card .f", { y: 14, autoAlpha: 0, duration: .35, stagger: .07 }, "-=.45")
+    .from(".stamp", { scale: 2.4, autoAlpha: 0, duration: .45, ease: "back.out(2.5)" }, "-=.1");
+
+  /* dossier parallax as the hero scrolls away */
+  gsap.to(".dossier", {
+    yPercent: 10, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+  });
+
+  /* ---------- generic section-head reveals ---------- */
+  gsap.utils.toArray(".sec-head").forEach(function (el) {
+    gsap.from(el.children, {
+      y: 36, autoAlpha: 0, duration: .7, stagger: .12, ease: "power3.out",
+      scrollTrigger: { trigger: el, start: "top 82%" }
+    });
+  });
+
+  /* ---------- the window: draw the line, pop the steps ---------- */
+  gsap.fromTo(".steps", { "--line-draw": 0 }, {
+    "--line-draw": 1, duration: 1.1, ease: "power2.inOut",
+    scrollTrigger: { trigger: ".steps", start: "top 80%" }
+  });
+  gsap.from(".step", {
+    y: 44, autoAlpha: 0, duration: .6, stagger: .16, ease: "power3.out",
+    scrollTrigger: { trigger: ".steps", start: "top 80%" }
+  });
+  gsap.from(".step .dot", {
+    scale: 0, duration: .45, stagger: .16, ease: "back.out(3)",
+    scrollTrigger: { trigger: ".steps", start: "top 80%" }
+  });
+
+  /* ---------- difference table ---------- */
+  gsap.from(".diff table", {
+    y: 40, autoAlpha: 0, duration: .6, ease: "power3.out",
+    scrollTrigger: { trigger: ".diff", start: "top 82%" }
+  });
+  gsap.from(".diff tbody tr", {
+    x: -32, autoAlpha: 0, duration: .5, stagger: .1, ease: "power2.out",
+    scrollTrigger: { trigger: ".diff", start: "top 78%" }
+  });
+
+  /* ---------- field cards ---------- */
+  gsap.from(".field-card", {
+    y: 48, autoAlpha: 0, duration: .6, ease: "power3.out",
+    stagger: { each: .09, grid: [2, 3], from: "start" },
+    scrollTrigger: { trigger: ".fields", start: "top 82%" }
+  });
+
+  /* ---------- pricing: reveal + price count-up ---------- */
+  gsap.from(".pricing .eyebrow, .pricing h2", {
+    y: 32, autoAlpha: 0, duration: .65, stagger: .12, ease: "power3.out",
+    scrollTrigger: { trigger: ".pricing", start: "top 78%" }
+  });
+  gsap.from(".price-box .terms li", {
+    x: -28, autoAlpha: 0, duration: .55, stagger: .12, ease: "power2.out",
+    scrollTrigger: { trigger: ".pricing", start: "top 75%" }
+  });
+  gsap.from(".price-card", {
+    y: 56, autoAlpha: 0, scale: .94, duration: .8, ease: "power3.out",
+    scrollTrigger: { trigger: ".pricing", start: "top 75%" }
+  });
+  var amtEl = document.querySelector(".price-card .amt");
+  if (amtEl) {
+    var price = { v: 0 };
+    gsap.to(price, {
+      v: 1490, duration: 1.4, ease: "power2.out",
+      scrollTrigger: { trigger: ".price-card", start: "top 80%" },
+      onUpdate: function () { amtEl.textContent = "$" + Math.round(price.v).toLocaleString("en-AU"); },
+      onComplete: function () { amtEl.textContent = "$1,490"; }
+    });
+  }
+
+  /* ---------- opt-in ---------- */
+  gsap.from(".optin .wrap > div:first-child > *", {
+    y: 30, autoAlpha: 0, duration: .6, stagger: .1, ease: "power3.out",
+    scrollTrigger: { trigger: ".optin", start: "top 78%" }
+  });
+  gsap.from(".form-card", {
+    y: 56, autoAlpha: 0, duration: .75, ease: "power3.out",
+    scrollTrigger: { trigger: ".optin", start: "top 78%" }
+  });
+
+  /* keep trigger positions honest once webfonts settle */
+  window.addEventListener("load", function () { ScrollTrigger.refresh(); });
+})();
+</script>
 
 </body>
 </html>
