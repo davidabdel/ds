@@ -6,22 +6,22 @@
 <title>Distress Signals — NSW Winding-Up Intelligence, Before the Hearing</title>
 <meta name="description" content="Every NSW winding-up application, enriched and on your desk by 7am — while the company can still be saved. Three seats per practice segment.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#122442; --navy2:#1B3358; --gold:#C9A227; --gold-soft:#E7D9A8;
-    --paper:#F7F8FA; --ink:#1A1A1A; --grey:#6B7280; --line:#D8DDE6;
+    --navy:#15233F; --navy2:#1E3255; --gold:#C9A227; --gold-soft:#E7D9A8;
+    --paper:#F5F2EA; --ink:#1B2333; --grey:#6B7280; --line:#EEE7D8;
     --live:#1E7A46; --petition:#B42318;
-    --display:'Archivo',Arial,sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',Menlo,monospace;
+    --display:'Spectral',Georgia,serif; --serif:'Spectral',Georgia,serif; --mono:'IBM Plex Mono',Menlo,monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{font-family:var(--serif);color:var(--ink);background:var(--paper);line-height:1.6}
   a{color:inherit}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-  .eyebrow{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-  h1,h2{font-family:var(--display);font-weight:900;line-height:1.05;letter-spacing:-.01em}
-  .btn{display:inline-block;font-family:var(--display);font-weight:700;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:16px 28px;border-radius:4px;transition:transform .15s ease, box-shadow .15s ease}
+  .eyebrow{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  h1,h2{font-family:var(--display);font-weight:700;line-height:1.05;letter-spacing:-.01em}
+  .btn{display:inline-block;font-family:var(--mono);font-weight:700;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:16px 28px;border-radius:4px;transition:transform .15s ease, box-shadow .15s ease}
   .btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
   .btn-gold{background:var(--gold);color:var(--navy)}
   .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,162,39,.35)}
@@ -32,18 +32,16 @@
   .topbar{background:var(--navy);border-bottom:1px solid rgba(201,162,39,.35)}
   .topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px}
   .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
-  .brand-name{font-family:var(--display);font-weight:900;font-size:1.05rem;letter-spacing:.14em;color:#fff}
+  .brand-name{font-family:var(--display);font-weight:600;font-size:1.2rem;letter-spacing:-.01em;color:#fff}
   .brand-name span{color:var(--gold)}
   .intake{font-family:var(--mono);font-size:.72rem;color:var(--gold-soft);letter-spacing:.04em}
   .intake b{color:var(--gold)}
 
-  /* logo mark */
+  /* logo mark — radar sweep */
   .mark{width:44px;height:44px;flex:none}
-  @keyframes ping{0%{opacity:1}70%{opacity:.15}100%{opacity:1}}
-  .mark .a1{animation:ping 2.4s ease-in-out infinite}
-  .mark .a2{animation:ping 2.4s ease-in-out .35s infinite}
-  .mark .a3{animation:ping 2.4s ease-in-out .7s infinite}
-  @media (prefers-reduced-motion: reduce){.mark .a1,.mark .a2,.mark .a3{animation:none}}
+  .mark .sweep{transform-box:view-box;transform-origin:50px 50px;animation:radarsweep 6s linear infinite}
+  @keyframes radarsweep{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){.mark .sweep{animation:none}}
 
   /* ---------- hero ---------- */
   .hero{background:linear-gradient(180deg,var(--navy) 0%,#0D1B33 100%);color:#fff;overflow:hidden;position:relative}
@@ -60,17 +58,17 @@
   .dossier::before{content:"";position:absolute;inset:14px -14px -14px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:8px}
   .lead-card{position:relative;background:#fff;color:var(--ink);border-radius:8px;box-shadow:0 30px 60px rgba(0,0,0,.45);padding:26px 26px 20px;border-left:5px solid var(--petition)}
   .lead-tags{position:absolute;top:22px;right:22px;display:flex;gap:8px}
-  .pill{font-family:var(--display);font-weight:700;font-size:.62rem;letter-spacing:.08em;padding:5px 12px;border-radius:99px;color:#fff}
+  .pill{font-family:var(--mono);font-weight:700;font-size:.62rem;letter-spacing:.08em;padding:5px 12px;border-radius:99px;color:#fff}
   .pill-red{background:var(--petition)} .pill-live{background:var(--live)}
-  .lead-card h3{font-family:var(--display);font-weight:900;font-size:1.15rem;color:var(--navy);letter-spacing:.01em;padding-right:150px}
+  .lead-card h3{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--navy);letter-spacing:.03em;padding-right:150px}
   .lead-sub{font-family:var(--mono);font-size:.7rem;color:var(--grey);margin:6px 0 18px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
-  .f label{display:block;font-family:var(--display);font-weight:700;font-size:.58rem;letter-spacing:.14em;color:var(--grey);text-transform:uppercase}
+  .f label{display:block;font-family:var(--mono);font-weight:700;font-size:.58rem;letter-spacing:.14em;color:var(--grey);text-transform:uppercase}
   .f div{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--ink);margin-top:2px}
   .f .hot{color:var(--petition)}
   .why{margin-top:18px;background:var(--paper);border-radius:6px;padding:10px 14px;font-size:.8rem}
-  .why b{font-family:var(--display);font-size:.6rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-right:8px}
-  .stamp{position:absolute;bottom:64px;right:-6px;transform:rotate(-8deg);font-family:var(--display);font-weight:900;font-size:.7rem;letter-spacing:.2em;color:var(--live);border:2px solid var(--live);border-radius:4px;padding:5px 10px;opacity:.85;background:rgba(255,255,255,.9)}
+  .why b{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-right:8px}
+  .stamp{position:absolute;bottom:64px;right:-6px;transform:rotate(-8deg);font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.2em;color:var(--live);border:2px solid var(--live);border-radius:4px;padding:5px 10px;opacity:.85;background:rgba(255,255,255,.9)}
 
   /* ---------- sections ---------- */
   section{padding:88px 0}
@@ -84,7 +82,7 @@
   .steps::before{content:"";position:absolute;top:11px;left:12%;right:12%;height:2px;background:var(--line);transform:scaleX(var(--line-draw,1));transform-origin:left center}
   .step{text-align:center;padding:0 14px;position:relative}
   .dot{width:22px;height:22px;border-radius:50%;margin:0 auto 14px;position:relative;z-index:1;border:5px solid #fff;box-shadow:0 0 0 1px var(--line)}
-  .step h4{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
+  .step h4{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
   .step p{font-size:.85rem;color:var(--grey);margin-top:6px}
   .step .when{font-family:var(--mono);font-size:.68rem;margin-top:8px;display:block}
   .s-you .dot{background:var(--gold)} .s-you .when{color:var(--gold);font-weight:600}
@@ -94,18 +92,18 @@
   .diff{overflow-x:auto}
   table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   th,td{padding:16px 18px;text-align:left;font-size:.9rem;border-bottom:1px solid var(--line)}
-  thead th{font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+  thead th{font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
   thead th:first-child{width:26%}
   th.us{background:var(--navy);color:var(--gold)}
   td.us{background:#FBF7EA;font-weight:600}
-  tbody th{font-family:var(--display);font-weight:700;font-size:.75rem;letter-spacing:.06em;color:var(--navy);text-transform:uppercase}
+  tbody th{font-family:var(--mono);font-weight:700;font-size:.75rem;letter-spacing:.06em;color:var(--navy);text-transform:uppercase}
   td{color:var(--grey)} td.us{color:var(--ink)}
   tr:last-child th,tr:last-child td{border-bottom:none}
 
   /* fields */
   .fields{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
   .field-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}
-  .field-card h4{font-family:var(--display);font-weight:700;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)}
+  .field-card h4{font-family:var(--display);font-weight:600;font-size:1rem;letter-spacing:-.005em;color:var(--navy)}
   .field-card p{font-size:.88rem;color:var(--grey);margin-top:8px}
   .field-card .tag{font-family:var(--mono);font-size:.62rem;color:var(--gold);letter-spacing:.06em}
 
@@ -117,13 +115,13 @@
   .terms li{margin:10px 0;list-style:none;padding-left:26px;position:relative;font-size:.95rem}
   .terms li::before{content:"";position:absolute;left:0;top:9px;width:12px;height:12px;background:var(--gold);border-radius:2px}
   .price-card{background:rgba(255,255,255,.05);border:1px solid rgba(201,162,39,.5);border-radius:10px;padding:36px;text-align:center}
-  .price-card .anchor-price{font-family:var(--display);font-weight:700;font-size:1.15rem;color:#8FA0B8;margin:14px 0 2px}
+  .price-card .anchor-price{font-family:var(--mono);font-weight:700;font-size:1.15rem;color:#8FA0B8;margin:14px 0 2px}
   .price-card .anchor-price span{font-family:var(--mono);font-size:.6rem;text-decoration:none;letter-spacing:.08em}
   .price-card .anchor-price .strike{position:relative;display:inline-block;text-decoration:none}
   .price-card .anchor-price .strike::after{content:"";position:absolute;left:-3%;top:52%;width:106%;height:2px;background:var(--petition);transform:scaleX(var(--strike,1));transform-origin:left center}
-  .price-card .amt{font-family:var(--display);font-weight:900;font-size:3rem;color:var(--gold)}
+  .price-card .amt{font-family:var(--mono);font-weight:700;font-size:3rem;color:var(--gold)}
   .price-card .per{font-family:var(--mono);font-size:.75rem;color:#8FA0B8;margin-bottom:6px}
-  .price-card .seat{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:14px 0 24px}
+  .price-card .seat{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:14px 0 24px}
   .foot-note{font-family:var(--mono);font-size:.68rem;color:#8FA0B8;margin-top:16px}
 
   footer{background:#0D1B33;color:#8FA0B8;padding:34px 0;font-size:.78rem}
@@ -140,10 +138,10 @@
   .optin .sec-copy{margin-top:14px;color:var(--grey)}
   .form-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:32px}
   .form-row{margin-bottom:18px}
-  .form-row label{display:block;font-family:var(--display);font-weight:700;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin-bottom:7px}
+  .form-row label{display:block;font-family:var(--mono);font-weight:700;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin-bottom:7px}
   .form-row input,.form-row select{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--serif);font-size:.95rem;color:var(--ink)}
   .form-row input:focus,.form-row select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.2)}
-  .form-row select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%23122442' stroke-width='2' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
+  .form-row select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%2315233F' stroke-width='2' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
   .form-card .btn{width:100%;border:none;cursor:pointer;font-size:.9rem}
   .form-note{font-family:var(--mono);font-size:.66rem;color:var(--grey);margin-top:14px;text-align:center}
   .form-msg{display:none;margin-top:16px;padding:14px;border-radius:6px;font-size:.88rem;text-align:center}
@@ -168,15 +166,18 @@
 <div class="topbar">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Distress Signals home">
-      <svg class="mark" viewBox="0 0 140 140" role="img" aria-label="Distress Signals mark">
-        <circle cx="70" cy="70" r="58" fill="#122442"/>
-        <circle cx="70" cy="70" r="58" fill="none" stroke="#C9A227" stroke-width="4"/>
-        <circle cx="52" cy="82" r="7" fill="#C9A227"/>
-        <path class="a1" d="M 63 71 A 15.6 15.6 0 0 1 67.6 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round"/>
-        <path class="a2" d="M 71 63 A 26.9 26.9 0 0 1 78.9 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round" opacity=".75"/>
-        <path class="a3" d="M 79 55 A 38.2 38.2 0 0 1 90.2 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Distress Signals mark">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#F5F2EA" stroke-width="3.5"/>
+        <circle cx="50" cy="50" r="24" fill="none" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
+        <line x1="50" y1="7" x2="50" y2="93" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
+        <line x1="7" y1="50" x2="93" y2="50" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
+        <g class="sweep">
+          <path d="M 50 50 L 95 50 A 45 45 0 0 0 81.8 18.2 Z" fill="#C9A227" opacity=".9"/>
+          <line x1="50" y1="50" x2="81.8" y2="18.2" stroke="#E6C25A" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="77" cy="31" r="4" fill="#F5F2EA"/>
+        </g>
       </svg>
-      <span class="brand-name">DISTRESS <span>SIGNALS</span></span>
+      <span class="brand-name">Distress <span>Signals</span></span>
     </a>
     <div class="intake">FOUNDERS INTAKE: <b>NSW — 3 SEATS PER SEGMENT</b></div>
   </div>

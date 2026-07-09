@@ -7,31 +7,34 @@
 <meta name="description" content="Privacy policy for Distress Signals — how we collect, use and protect your information.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#122442; --navy2:#1B3358; --gold:#C9A227; --gold-soft:#E7D9A8;
-    --paper:#F7F8FA; --ink:#1A1A1A; --grey:#6B7280; --line:#D8DDE6;
+    --navy:#15233F; --navy2:#1E3255; --gold:#C9A227; --gold-soft:#E7D9A8;
+    --paper:#F5F2EA; --ink:#1B2333; --grey:#6B7280; --line:#EEE7D8;
     --live:#1E7A46; --petition:#B42318;
-    --display:'Archivo',Arial,sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',Menlo,monospace;
+    --display:'Spectral',Georgia,serif; --serif:'Spectral',Georgia,serif; --mono:'IBM Plex Mono',Menlo,monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:var(--serif);color:var(--ink);background:var(--paper);line-height:1.7}
   a{color:var(--navy2)}
   .wrap{max-width:820px;margin:0 auto;padding:0 24px}
-  .eyebrow{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  .eyebrow{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
 
   .topbar{background:var(--navy);border-bottom:1px solid rgba(201,162,39,.35)}
   .topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px;max-width:1080px}
   .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
-  .brand-name{font-family:var(--display);font-weight:900;font-size:1.05rem;letter-spacing:.14em;color:#fff}
+  .brand-name{font-family:var(--display);font-weight:600;font-size:1.2rem;letter-spacing:-.01em;color:#fff}
   .brand-name span{color:var(--gold)}
   .mark{width:44px;height:44px;flex:none}
-  .back{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);text-decoration:none}
+  .mark .sweep{transform-box:view-box;transform-origin:50px 50px;animation:radarsweep 6s linear infinite}
+  @keyframes radarsweep{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){.mark .sweep{animation:none}}
+  .back{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);text-decoration:none}
   .back:hover{color:var(--gold)}
 
   .legal-head{padding:64px 0 40px;border-bottom:1px solid var(--line)}
-  .legal-head h1{font-family:var(--display);font-weight:900;font-size:clamp(1.9rem,4vw,2.6rem);color:var(--navy);letter-spacing:-.01em;margin-top:10px}
+  .legal-head h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4vw,2.6rem);color:var(--navy);letter-spacing:-.01em;margin-top:10px}
   .legal-head .updated{font-family:var(--mono);font-size:.75rem;color:var(--grey);margin-top:14px}
 
   main{padding:48px 0 88px}
@@ -45,7 +48,7 @@
 
   table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:0 0 18px;font-size:.9rem}
   th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
-  thead th{font-family:var(--display);font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy);color:var(--gold)}
+  thead th{font-family:var(--mono);font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy);color:var(--gold)}
   tr:last-child td{border-bottom:none}
   td{color:var(--ink)}
 
@@ -66,15 +69,18 @@
 <div class="topbar">
   <div class="wrap">
     <a class="brand" href="index.html" aria-label="Distress Signals home">
-      <svg class="mark" viewBox="0 0 140 140" role="img" aria-label="Distress Signals mark">
-        <circle cx="70" cy="70" r="58" fill="#122442"/>
-        <circle cx="70" cy="70" r="58" fill="none" stroke="#C9A227" stroke-width="4"/>
-        <circle cx="52" cy="82" r="7" fill="#C9A227"/>
-        <path d="M 63 71 A 15.6 15.6 0 0 1 67.6 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round"/>
-        <path d="M 71 63 A 26.9 26.9 0 0 1 78.9 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round" opacity=".75"/>
-        <path d="M 79 55 A 38.2 38.2 0 0 1 90.2 82" fill="none" stroke="#C9A227" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Distress Signals mark">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#F5F2EA" stroke-width="3.5"/>
+        <circle cx="50" cy="50" r="24" fill="none" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
+        <line x1="50" y1="7" x2="50" y2="93" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
+        <line x1="7" y1="50" x2="93" y2="50" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
+        <g class="sweep">
+          <path d="M 50 50 L 95 50 A 45 45 0 0 0 81.8 18.2 Z" fill="#C9A227" opacity=".9"/>
+          <line x1="50" y1="50" x2="81.8" y2="18.2" stroke="#E6C25A" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="77" cy="31" r="4" fill="#F5F2EA"/>
+        </g>
       </svg>
-      <span class="brand-name">DISTRESS <span>SIGNALS</span></span>
+      <span class="brand-name">Distress <span>Signals</span></span>
     </a>
     <a class="back" href="index.html">← Back to site</a>
   </div>
