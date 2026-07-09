@@ -128,6 +128,10 @@
 
   footer{background:#0D1B33;color:#8FA0B8;padding:34px 0;font-size:.78rem}
   footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  footer a{color:#8FA0B8;text-decoration:none}
+  footer a:hover{color:var(--gold)}
+  footer .foot-left{display:flex;flex-direction:column;gap:4px}
+  .footer-links{display:flex;gap:18px;align-items:flex-start}
 
   /* ---------- opt-in form ---------- */
   .optin{background:#fff;border-top:1px solid var(--line)}
@@ -392,8 +396,14 @@
 
 <footer>
   <div class="wrap">
-    <div>© Distress Signals. Information service only — not legal or financial advice.</div>
-    <div>All records sourced from public registers and verifiable by action number.</div>
+    <div class="foot-left">
+      <div>© Distress Signals. Information service only — not legal or financial advice.</div>
+      <div>All records sourced from public registers and verifiable by action number.</div>
+    </div>
+    <div class="footer-links">
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
   </div>
 </footer>
 
