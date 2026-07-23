@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Distress Signals — NSW Winding-Up Intelligence, Before the Hearing</title>
+<title>Vendor Intelligence — Suburb-Exclusive Estate Intelligence for Agents</title>
 <meta name="description" content="Every NSW winding-up application, enriched and on your desk by 7am — while the company can still be saved. Or Vendor Intelligence: suburb-exclusive estate intelligence for real estate agents.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -195,7 +195,7 @@
   }
 </style>
 </head>
-<body data-mode="distress">
+<body data-mode="vendor">
 
 <div class="topbar">
   <div class="wrap">
@@ -224,7 +224,7 @@
   <div class="wrap">
     <div class="switch-label">Choose your feed</div>
     <div class="seg-group" role="group" aria-label="Choose your intelligence feed">
-      <button type="button" class="seg" data-target="distress" aria-pressed="true">
+      <button type="button" class="seg" data-target="distress" aria-pressed="false">
         <svg class="seg-mark" viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="45" fill="none" stroke="#C9A227" stroke-width="6"/>
           <path d="M50 24 L50 56 M50 68 L50 76" stroke="#C9A227" stroke-width="8" stroke-linecap="round"/>
@@ -234,7 +234,7 @@
           <span class="seg-d">Insolvency intelligence · advisers, lawyers, lenders</span>
         </span>
       </button>
-      <button type="button" class="seg" data-target="vendor" aria-pressed="false">
+      <button type="button" class="seg" data-target="vendor" aria-pressed="true">
         <svg class="seg-mark" viewBox="0 0 100 100" aria-hidden="true">
           <path d="M18 52 L50 24 L82 52" fill="none" stroke="#C9A227" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M28 50 L28 78 L72 78 L72 50" fill="none" stroke="#C9A227" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -420,7 +420,7 @@
       <p class="lede">Every estate entering probate in your suburb — the property, the timing, and the acting solicitor who instructs the sale — on your desk every week. Months before it lists, while every other agent is still dropping letters.</p>
       <div class="fact">SOURCE: NSW ONLINE REGISTRY — PUBLISHED PROBATE NOTICES · SUPREME COURT NSW · PUBLIC RECORD ONLY</div>
       <div class="cta-row">
-        <a class="btn btn-gold" href="#optin-vendor">Get this week's suburb report — free</a>
+        <a class="btn btn-gold" href="#optin-vendor">Register your interest</a>
         <a class="btn btn-ghost" href="#optin-vendor">Lock your suburb</a>
       </div>
     </div>
@@ -454,7 +454,7 @@
     </div>
     <div class="steps">
       <div class="step s-start"><div class="dot"></div><h4>Estate arises</h4><p>Owner passes. Family begins the process.</p><span class="when">MONTH 0</span></div>
-      <div class="step s-you"><div class="dot"></div><h4>Probate notice</h4><p>You're alerted — solicitor named, in this week's report.</p><span class="when">YOU ARE HERE</span></div>
+      <div class="step s-you"><div class="dot"></div><h4>Probate notice</h4><p>You're alerted — solicitor named, in your weekly report.</p><span class="when">YOU ARE HERE</span></div>
       <div class="step s-them"><div class="dot"></div><h4>Grant &amp; decision</h4><p>Estate settles. The family weighs up who to list with.</p><span class="when">+3–9 MONTHS</span></div>
       <div class="step s-list"><div class="dot"></div><h4>Property lists</h4><p>The sign goes up. Every other agent finds out now.</p><span class="when">+6–12 MONTHS</span></div>
     </div>
@@ -509,7 +509,7 @@
       <ul class="terms">
         <li>Lock a suburb and we never sell it again. Your competitors get told it's taken.</li>
         <li>Delivered every week — the estate, the timing, and the acting solicitor's name, firm, phone and email for each.</li>
-        <li>This week's report is free — real estates, real solicitor contacts. Land one listing and it's paid for two years.</li>
+        <li>Every report is real estates and real solicitor contacts — not samples. Land one listing and it's paid for two years.</li>
       </ul>
     </div>
     <div class="price-card">
@@ -528,9 +528,9 @@
   <div class="wrap">
     <div>
       <div class="eyebrow">Founders Intake</div>
-      <h2>Get this week's report. Judge it on the estates.</h2>
-      <p class="sec-copy">Leave your details and this week's report for your suburb lands in your inbox, free — every estate in probate, with the acting solicitor's name, firm, phone and email attached. If it's not worth a call, you'll never hear from us again.</p>
-      <p class="sec-copy">One agent per suburb, first come. Tell us the suburb you want and we'll confirm whether it's still open.</p>
+      <h2>Register your interest. Lock your suburb before a competitor does.</h2>
+      <p class="sec-copy">One agent per suburb — that's the whole model. Tell us the suburb you want and we'll confirm whether it's still open, walk you through exactly what's on each estate card, and reserve it in your name while you decide.</p>
+      <p class="sec-copy">First come, first locked. Once a suburb's taken, the other agents on your patch are told it's gone.</p>
     </div>
     <div class="form-card">
       <form class="optin-form" data-source="vendor-intelligence-landing" novalidate>
@@ -550,8 +550,8 @@
           <label>Suburb you want to lock</label>
           <input name="detail" type="text" required placeholder="e.g. Mosman NSW">
         </div>
-        <button class="btn btn-gold" type="submit">Send me this week's report</button>
-        <div class="form-note">THIS WEEK'S REPORT FREE · NO CARD REQUIRED · CANCEL ANY TIME</div>
+        <button class="btn btn-gold" type="submit">Register your interest</button>
+        <div class="form-note">ONE AGENT PER SUBURB · NO CARD REQUIRED · CHECK AVAILABILITY</div>
         <div class="form-msg" role="status"></div>
       </form>
     </div>
@@ -605,7 +605,7 @@
 
   // deep-link support: #vendor / ?mode=vendor
   (function () {
-    var initial = "distress";
+    var initial = "vendor";
     var h = (location.hash || "").replace("#", "");
     var q = new URLSearchParams(location.search).get("mode");
     if (h === "vendor" || q === "vendor") initial = "vendor";
@@ -652,7 +652,7 @@
         return;
       }
       var okText = isVendor
-        ? "Done — this week's report for " + data.suburb + " will be in your inbox shortly."
+        ? "Done — we've registered your interest in " + data.suburb + ". We'll be in touch to confirm it's still open."
         : "Done — tomorrow's brief will be in your inbox by 7am.";
       if (FORM_ENDPOINT) {
         var btn = form.querySelector("button"); btn.disabled = true;
