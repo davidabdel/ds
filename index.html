@@ -624,10 +624,12 @@
   });
 
   // ---------- lead capture (both forms) ----------
-  // To capture leads directly into your CRM, paste your form endpoint below
-  // (GoHighLevel inbound webhook, Formspree URL, etc). Leave blank to fall
-  // back to opening an email with the details pre-filled.
-  var FORM_ENDPOINT = "https://services.leadconnectorhq.com/hooks/Mf8u8bZ4PRZbFQBuWPoH/webhook-trigger/b005d7d0-7e1b-491d-b7e9-e6057e62dc32";
+  // Each product posts to its own GoHighLevel inbound webhook. Leave a value
+  // blank to fall back to opening an email with the details pre-filled.
+  var ENDPOINTS = {
+    "distress-signals-landing": "https://services.leadconnectorhq.com/hooks/Mf8u8bZ4PRZbFQBuWPoH/webhook-trigger/b005d7d0-7e1b-491d-b7e9-e6057e62dc32",
+    "vendor-intelligence-landing": "https://services.leadconnectorhq.com/hooks/JkEkdWKxqdohCbWWIAc5/webhook-trigger/c0629290-d7ac-4c45-b21b-f3df67b1da87"
+  };
   var FALLBACK_EMAIL = "hello@distresssignals.com.au";
 
   document.querySelectorAll(".optin-form").forEach(function (form) {
@@ -644,6 +646,7 @@
         suburb: isVendor ? form.detail.value.trim() : "",
         source: form.dataset.source
       };
+      var FORM_ENDPOINT = ENDPOINTS[form.dataset.source];
       if (!data.name || !data.email || !data.phone || !form.detail.value.trim()) {
         msg.className = "form-msg err";
         msg.textContent = isVendor
