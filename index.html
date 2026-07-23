@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Distress Signals — NSW Winding-Up Intelligence, Before the Hearing</title>
-<meta name="description" content="Every NSW winding-up application, enriched and on your desk by 7am — while the company can still be saved. Five seats per practice segment.">
+<meta name="description" content="Every NSW winding-up application, enriched and on your desk by 7am — while the company can still be saved. Or Vendor Intelligence: suburb-exclusive estate intelligence for real estate agents.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -37,11 +37,40 @@
   .intake{font-family:var(--mono);font-size:.72rem;color:var(--gold-soft);letter-spacing:.04em}
   .intake b{color:var(--gold)}
 
+  /* only the wordmark / intake line matching the active mode is shown */
+  .brand-name,.intake{display:none}
+  body[data-mode="distress"] .brand-name.m-distress,
+  body[data-mode="distress"] .intake.m-distress,
+  body[data-mode="vendor"] .brand-name.m-vendor,
+  body[data-mode="vendor"] .intake.m-vendor{display:block}
+
   /* logo mark — radar sweep */
   .mark{width:44px;height:44px;flex:none}
   .mark .sweep{transform-box:view-box;transform-origin:50px 50px;animation:radarsweep 6s linear infinite}
   @keyframes radarsweep{to{transform:rotate(360deg)}}
   @media (prefers-reduced-motion: reduce){.mark .sweep{animation:none}}
+
+  /* ---------- product switcher (the top layer) ---------- */
+  .switcher{background:#11203B;border-bottom:1px solid rgba(201,162,39,.22)}
+  .switcher .wrap{padding-top:16px;padding-bottom:16px}
+  .switch-label{font-family:var(--mono);font-weight:700;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#8FA0B8;text-align:center;margin-bottom:12px}
+  .seg-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .seg{flex:1 1 320px;max-width:400px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:14px 18px;transition:border-color .18s ease, background .18s ease, transform .15s ease}
+  .seg:hover{border-color:rgba(201,162,39,.55);transform:translateY(-1px)}
+  .seg:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .seg .seg-mark{width:30px;height:30px;flex:none;opacity:.6;transition:opacity .18s ease}
+  .seg-body{display:flex;flex-direction:column;gap:3px}
+  .seg .seg-t{font-family:var(--display);font-weight:600;font-size:1rem;letter-spacing:-.01em;color:#fff}
+  .seg .seg-d{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#8FA0B8}
+  .seg[aria-pressed="true"]{border-color:var(--gold);background:rgba(201,162,39,.1)}
+  .seg[aria-pressed="true"] .seg-mark{opacity:1}
+  .seg[aria-pressed="true"] .seg-t{color:var(--gold)}
+  .seg[aria-pressed="true"] .seg-d{color:var(--gold-soft)}
+
+  /* ---------- panels ---------- */
+  .mode-panel{display:none}
+  body[data-mode="distress"] .mode-panel.m-distress,
+  body[data-mode="vendor"] .mode-panel.m-vendor{display:block}
 
   /* ---------- hero ---------- */
   .hero{background:linear-gradient(180deg,var(--navy) 0%,#0D1B33 100%);color:#fff;overflow:hidden;position:relative}
@@ -57,15 +86,18 @@
   .dossier{position:relative}
   .dossier::before{content:"";position:absolute;inset:14px -14px -14px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:8px}
   .lead-card{position:relative;background:#fff;color:var(--ink);border-radius:8px;box-shadow:0 30px 60px rgba(0,0,0,.45);padding:26px 26px 20px;border-left:5px solid var(--petition)}
+  .lead-card.vendor{border-left-color:var(--gold)}
   .lead-tags{position:absolute;top:22px;right:22px;display:flex;gap:8px}
   .pill{font-family:var(--mono);font-weight:700;font-size:.62rem;letter-spacing:.08em;padding:5px 12px;border-radius:99px;color:#fff}
-  .pill-red{background:var(--petition)} .pill-live{background:var(--live)}
+  .pill-red{background:var(--petition)} .pill-live{background:var(--live)} .pill-gold{background:var(--gold);color:var(--navy)}
   .lead-card h3{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--navy);letter-spacing:.03em;padding-right:150px}
   .lead-sub{font-family:var(--mono);font-size:.7rem;color:var(--grey);margin:6px 0 18px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
   .f label{display:block;font-family:var(--mono);font-weight:700;font-size:.58rem;letter-spacing:.14em;color:var(--grey);text-transform:uppercase}
   .f div{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--ink);margin-top:2px}
+  .f.wide{grid-column:1 / -1}
   .f .hot{color:var(--petition)}
+  .f .good{color:var(--live)}
   .why{margin-top:18px;background:var(--paper);border-radius:6px;padding:10px 14px;font-size:.8rem}
   .why b{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-right:8px}
   .stamp{position:absolute;bottom:64px;right:-6px;transform:rotate(-8deg);font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.2em;color:var(--live);border:2px solid var(--live);border-radius:4px;padding:5px 10px;opacity:.85;background:rgba(255,255,255,.9)}
@@ -87,6 +119,7 @@
   .step .when{font-family:var(--mono);font-size:.68rem;margin-top:8px;display:block}
   .s-you .dot{background:var(--gold)} .s-you .when{color:var(--gold);font-weight:600}
   .s-them .dot{background:var(--navy2)} .s-end .dot{background:var(--petition)} .s-start .dot{background:var(--grey)}
+  .s-list .dot{background:var(--live)}
 
   /* difference table */
   .diff{overflow-x:auto}
@@ -122,6 +155,7 @@
   .price-card .amt{font-family:var(--mono);font-weight:700;font-size:3rem;color:var(--gold)}
   .price-card .per{font-family:var(--mono);font-size:.75rem;color:#8FA0B8;margin-bottom:6px}
   .price-card .seat{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:14px 0 24px}
+  .price-card .addon{font-family:var(--mono);font-size:.72rem;color:var(--gold-soft);margin:-6px 0 20px;line-height:1.5}
   .foot-note{font-family:var(--mono);font-size:.68rem;color:#8FA0B8;margin-top:16px}
 
   footer{background:#0D1B33;color:#8FA0B8;padding:34px 0;font-size:.78rem}
@@ -161,12 +195,12 @@
   }
 </style>
 </head>
-<body>
+<body data-mode="distress">
 
 <div class="topbar">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Distress Signals home">
-      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Distress Signals mark">
+    <a class="brand" href="#top" aria-label="Home">
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Radar sweep mark">
         <circle cx="50" cy="50" r="45" fill="none" stroke="#F5F2EA" stroke-width="3.5"/>
         <circle cx="50" cy="50" r="24" fill="none" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
         <line x1="50" y1="7" x2="50" y2="93" stroke="#F5F2EA" stroke-width="1" opacity=".22"/>
@@ -177,11 +211,47 @@
           <circle cx="77" cy="31" r="4" fill="#F5F2EA"/>
         </g>
       </svg>
-      <span class="brand-name">Distress <span>Signals</span></span>
+      <span class="brand-name m-distress">Distress <span>Signals</span></span>
+      <span class="brand-name m-vendor">Vendor <span>Intelligence</span></span>
     </a>
-    <div class="intake">FOUNDERS INTAKE: <b>NSW — 5 SEATS PER SEGMENT</b></div>
+    <div class="intake m-distress">FOUNDERS INTAKE: <b>NSW — 5 SEATS PER SEGMENT</b></div>
+    <div class="intake m-vendor">FOUNDERS INTAKE: <b>NSW — ONE AGENT PER SUBURB</b></div>
   </div>
 </div>
+
+<!-- ============ THE TOP LAYER: choose your feed ============ -->
+<div class="switcher">
+  <div class="wrap">
+    <div class="switch-label">Choose your feed</div>
+    <div class="seg-group" role="group" aria-label="Choose your intelligence feed">
+      <button type="button" class="seg" data-target="distress" aria-pressed="true">
+        <svg class="seg-mark" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="#C9A227" stroke-width="6"/>
+          <path d="M50 24 L50 56 M50 68 L50 76" stroke="#C9A227" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+        <span class="seg-body">
+          <span class="seg-t">Distress Signals</span>
+          <span class="seg-d">Insolvency intelligence · advisers, lawyers, lenders</span>
+        </span>
+      </button>
+      <button type="button" class="seg" data-target="vendor" aria-pressed="false">
+        <svg class="seg-mark" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M18 52 L50 24 L82 52" fill="none" stroke="#C9A227" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28 50 L28 78 L72 78 L72 50" fill="none" stroke="#C9A227" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="seg-body">
+          <span class="seg-t">Vendor Intelligence</span>
+          <span class="seg-d">Estate intelligence · real estate agents</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================= -->
+<!-- ==================  DISTRESS SIGNALS  ============================ -->
+<!-- ================================================================= -->
+<div class="mode-panel m-distress">
 
 <header class="hero" id="top">
   <div class="wrap">
@@ -191,8 +261,8 @@
       <p class="lede">Every winding-up application filed against a NSW company — who's suing them, the debt type, the hearing date, and the contact details — enriched and on your desk by 7am. While the company can still be saved.</p>
       <div class="fact">SOURCE: ASIC PUBLISHED NOTICES (s465A) · FEDERAL COURT &amp; SUPREME COURT NSW · PUBLIC RECORD ONLY</div>
       <div class="cta-row">
-        <a class="btn btn-gold" href="#optin">Get tomorrow's brief — free</a>
-        <a class="btn btn-ghost" href="#optin">Reserve a founders seat</a>
+        <a class="btn btn-gold" href="#optin-distress">Get tomorrow's brief — free</a>
+        <a class="btn btn-ghost" href="#optin-distress">Reserve a founders seat</a>
       </div>
     </div>
     <div class="dossier" aria-hidden="true">
@@ -271,7 +341,7 @@
   </div>
 </section>
 
-<section class="pricing" id="pricing">
+<section class="pricing" id="pricing-distress">
   <div class="wrap price-box">
     <div>
       <div class="eyebrow">Founders Intake</div>
@@ -285,16 +355,16 @@
     <div class="price-card">
       <div class="per">FOUNDERS PRICING — NSW FEED · WEEKDAYS 7AM</div>
       <div class="anchor-price"><s class="strike">$1,997</s> <span>/ MO AT GENERAL RELEASE</span></div>
-      <div class="amt">$1,490</div>
+      <div class="amt" data-from="1997" data-to="1490">$1,490</div>
       <div class="per founders">PER MONTH — FOUNDERS ONLY</div>
       <div class="seat">5 seats per practice segment</div>
-      <a class="btn btn-gold" href="#optin">Reserve your segment</a>
+      <a class="btn btn-gold" href="#optin-distress">Reserve your segment</a>
       <div class="foot-note">Founders rate locked for 12 months. Rises to $1,997/mo when founders intake closes.</div>
     </div>
   </div>
 </section>
 
-<section class="optin" id="optin">
+<section class="optin" id="optin-distress">
   <div class="wrap">
     <div>
       <div class="eyebrow">Founders Intake</div>
@@ -303,22 +373,22 @@
       <p class="sec-copy">Seats are allocated per segment, first come. Selecting your segment lets us confirm whether one is still open.</p>
     </div>
     <div class="form-card">
-      <form id="optinForm" novalidate>
+      <form class="optin-form" data-source="distress-signals-landing" novalidate>
         <div class="form-row">
-          <label for="f-name">Full name</label>
-          <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="e.g. Sarah Chen">
+          <label>Full name</label>
+          <input name="name" type="text" autocomplete="name" required placeholder="e.g. Sarah Chen">
         </div>
         <div class="form-row">
-          <label for="f-email">Work email</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@yourfirm.com.au">
+          <label>Work email</label>
+          <input name="email" type="email" autocomplete="email" required placeholder="you@yourfirm.com.au">
         </div>
         <div class="form-row">
-          <label for="f-phone">Phone</label>
-          <input id="f-phone" name="phone" type="tel" autocomplete="tel" required placeholder="04XX XXX XXX">
+          <label>Phone</label>
+          <input name="phone" type="tel" autocomplete="tel" required placeholder="04XX XXX XXX">
         </div>
         <div class="form-row">
-          <label for="f-segment">Your segment</label>
-          <select id="f-segment" name="segment" required>
+          <label>Your segment</label>
+          <select name="detail" required>
             <option value="" disabled selected>Select your practice segment</option>
             <option>Advisory &amp; Restructuring</option>
             <option>Legal — Insolvency / Disputes</option>
@@ -329,78 +399,175 @@
         </div>
         <button class="btn btn-gold" type="submit">Send me tomorrow's brief</button>
         <div class="form-note">TOMORROW'S EDITION FREE · NO CARD REQUIRED · CANCEL ANY TIME</div>
-        <div class="form-msg" id="formMsg" role="status"></div>
+        <div class="form-msg" role="status"></div>
       </form>
     </div>
   </div>
 </section>
 
-<script>
-  // Same-page anchors: scroll via JS so sandboxed previews don't treat them as external links
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener("click", function (e) {
-      var target = document.querySelector(a.getAttribute("href"));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-  });
+</div><!-- /distress panel -->
 
-  // To capture leads directly into your CRM, paste your form endpoint below
-  // (GoHighLevel inbound webhook, Formspree URL, etc). Leave blank to fall
-  // back to opening an email with the details pre-filled.
-  var FORM_ENDPOINT = "https://services.leadconnectorhq.com/hooks/Mf8u8bZ4PRZbFQBuWPoH/webhook-trigger/b005d7d0-7e1b-491d-b7e9-e6057e62dc32";
-  var FALLBACK_EMAIL = "hello@distresssignals.com.au";
+<!-- ================================================================= -->
+<!-- ==================  VENDOR INTELLIGENCE  ========================= -->
+<!-- ================================================================= -->
+<div class="mode-panel m-vendor">
 
-  document.getElementById("optinForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    var f = e.target, msg = document.getElementById("formMsg");
-    var data = {
-      name: f.name.value.trim(),
-      email: f.email.value.trim(),
-      phone: f.phone.value.trim(),
-      segment: f.segment.value,
-      source: "distress-signals-landing"
-    };
-    if (!data.name || !data.email || !data.phone || !data.segment) {
-      msg.className = "form-msg err";
-      msg.textContent = "Please complete all four fields — segment included, it's how we check seat availability.";
-      return;
-    }
-    if (FORM_ENDPOINT) {
-      var btn = f.querySelector("button"); btn.disabled = true;
-      fetch(FORM_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      }).then(function (r) {
-        if (!r.ok) throw new Error();
-        f.reset();
-        msg.className = "form-msg ok";
-        msg.textContent = "Done — tomorrow's brief will be in your inbox by 7am.";
-      }).catch(function () {
-        msg.className = "form-msg err";
-        msg.textContent = "Something went wrong sending your details. Email " + FALLBACK_EMAIL + " and we'll set you up manually.";
-      }).finally(function () { btn.disabled = false; });
-    } else {
-      var body = "Name: " + data.name + "%0D%0AEmail: " + data.email +
-                 "%0D%0APhone: " + data.phone + "%0D%0ASegment: " + data.segment;
-      window.location.href = "mailto:" + FALLBACK_EMAIL +
-        "?subject=" + encodeURIComponent("Founders intake — " + data.segment) +
-        "&body=" + body;
-      msg.className = "form-msg ok";
-      msg.textContent = "Your email app should open with the details filled in — just hit send.";
-    }
-  });
-</script>
+<header class="hero" id="top-vendor">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Suburb-Exclusive Estate Intelligence</div>
+      <h1>The probate register knows first.<br>Then <em>you</em> do.</h1>
+      <p class="lede">Every estate entering probate in your suburb — the property, the timing, and the acting solicitor who instructs the sale — on your desk every week. Months before it lists, while every other agent is still dropping letters.</p>
+      <div class="fact">SOURCE: NSW ONLINE REGISTRY — PUBLISHED PROBATE NOTICES · SUPREME COURT NSW · PUBLIC RECORD ONLY</div>
+      <div class="cta-row">
+        <a class="btn btn-gold" href="#optin-vendor">Get this week's suburb report — free</a>
+        <a class="btn btn-ghost" href="#optin-vendor">Lock your suburb</a>
+      </div>
+    </div>
+    <div class="dossier" aria-hidden="true">
+      <div class="lead-card vendor">
+        <div class="lead-tags"><span class="pill pill-gold">PROBATE</span><span class="pill pill-live">LIVE</span></div>
+        <h3>ESTATE OF M. E. DALTON</h3>
+        <div class="lead-sub">MOSMAN NSW · APPLICATION · 2026/00XXXXXX</div>
+        <div class="grid2">
+          <div class="f wide"><label>Acting solicitor / firm</label><div>G. Naylor — Harbourline Legal, Chatswood</div></div>
+          <div class="f"><label>Solicitor phone</label><div>02 8XXX XXXX</div></div>
+          <div class="f"><label>Solicitor email</label><div>reception@harbourlinelegal.com.au</div></div>
+          <div class="f"><label>Registry / Case no.</label><div>NSW Online Registry — 2026/00XXXXXX</div></div>
+          <div class="f"><label>Expected sale window</label><div class="good">Feb–Aug 2026</div></div>
+          <div class="f"><label>Date of death</label><div>18 Oct 2025</div></div>
+          <div class="f"><label>Notice published</label><div>2 Jul 2026</div></div>
+        </div>
+        <div class="why"><b>Why it matters</b>Estate solicitor identified — call re: the sale instruction. Property statistically to market within 6–12 months.</div>
+      </div>
+      <div class="stamp">REGISTRY VERIFIED</div>
+    </div>
+  </div>
+</header>
+
+<section class="window">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The Window</div>
+      <h2>A probate notice isn't the end of an estate. It's the start of a sale.</h2>
+      <p>When an estate enters probate, a property is statistically heading to market in the next six to twelve months — and the family hasn't chosen an agent yet. Everyone else finds out the day the sign goes up. You find out the week the notice is published, with the solicitor who instructs the sale already attached.</p>
+    </div>
+    <div class="steps">
+      <div class="step s-start"><div class="dot"></div><h4>Estate arises</h4><p>Owner passes. Family begins the process.</p><span class="when">MONTH 0</span></div>
+      <div class="step s-you"><div class="dot"></div><h4>Probate notice</h4><p>You're alerted — solicitor named, in this week's report.</p><span class="when">YOU ARE HERE</span></div>
+      <div class="step s-them"><div class="dot"></div><h4>Grant &amp; decision</h4><p>Estate settles. The family weighs up who to list with.</p><span class="when">+3–9 MONTHS</span></div>
+      <div class="step s-list"><div class="dot"></div><h4>Property lists</h4><p>The sign goes up. Every other agent finds out now.</p><span class="when">+6–12 MONTHS</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why It's Different</div>
+      <h2>Everyone chases the family. Nobody talks to the solicitor.</h2>
+      <p>When an estate sells, the family rarely picks the agent cold — the solicitor handling the estate does, or points them to one. Letterbox drops and portal data fight over the family. We hand you the decision-maker, weeks before anything lists.</p>
+    </div>
+    <div class="diff">
+      <table>
+        <thead>
+          <tr><th></th><th class="us">Vendor Intelligence</th><th>Letterbox farming</th><th>Portal &amp; property data</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Built for</th><td class="us">Winning the listing before it exists</td><td>Blanket brand awareness</td><td>Reporting on comparable sales</td></tr>
+          <tr><th scope="row">Timing</th><td class="us">Weekly — months before it lists</td><td>Ongoing, hope-based</td><td>After it's already listed or sold</td></tr>
+          <tr><th scope="row">Who you contact</th><td class="us">The acting solicitor who instructs the sale</td><td>Every household, unqualified</td><td>Nobody — it's a data feed</td></tr>
+          <tr><th scope="row">Territory</th><td class="us">One agent per suburb — locked</td><td>Every agent drops the same street</td><td>Anyone who subscribes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">On Every Estate</div>
+      <h2>Not a lead list. A conversation, ready to have.</h2>
+    </div>
+    <div class="fields">
+      <div class="field-card"><span class="tag">DECISION-MAKER</span><h4>The acting solicitor</h4><p>Name, firm, phone and email of the solicitor handling the estate — the person who instructs the sale, not the grieving family.</p></div>
+      <div class="field-card"><span class="tag">VERIFIED</span><h4>The registry file</h4><p>NSW Online Registry application and case number, checkable in one click. Public record only — no scraped guesses.</p></div>
+      <div class="field-card"><span class="tag">TIMING</span><h4>Expected sale window</h4><p>Date of death and notice date, resolved into a realistic window for when the property is likely to hit the market.</p></div>
+      <div class="field-card"><span class="tag">YOUR PATCH</span><h4>Suburb-exact</h4><p>Only estates in the suburb you've locked. No noise from the next postcode — every line is a property on your patch.</p></div>
+      <div class="field-card"><span class="tag">REACHABLE</span><h4>Professional contact</h4><p>You reach the solicitor, professional to professional, about a sale that's happening anyway — never the family, never a cold doorknock.</p></div>
+      <div class="field-card"><span class="tag">ACTIONABLE</span><h4>Why it matters</h4><p>One line per estate on the play — sale-instruction timing, likely window, the reason to call this week — written for the agent making the call.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing-vendor">
+  <div class="wrap price-box">
+    <div>
+      <div class="eyebrow">Founders Intake</div>
+      <h2>One agent per suburb. That's the whole model.</h2>
+      <ul class="terms">
+        <li>Lock a suburb and we never sell it again. Your competitors get told it's taken.</li>
+        <li>Delivered every week — the estate, the timing, and the acting solicitor's name, firm, phone and email for each.</li>
+        <li>This week's report is free — real estates, real solicitor contacts. Land one listing and it's paid for two years.</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <div class="per">FOUNDERS PRICING — SUBURB FEED · WEEKLY</div>
+      <div class="amt" data-from="0" data-to="990">$990</div>
+      <div class="per founders">PER MONTH — YOUR SUBURB, EXCLUSIVE</div>
+      <div class="addon">+ $300/mo for each surrounding suburb you lock before a competitor takes it.</div>
+      <div class="seat">One agent per suburb</div>
+      <a class="btn btn-gold" href="#optin-vendor">Lock your suburb</a>
+      <div class="foot-note">No lock-in — cancel any time. But the suburb goes to your competitor the same week.</div>
+    </div>
+  </div>
+</section>
+
+<section class="optin" id="optin-vendor">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Founders Intake</div>
+      <h2>Get this week's report. Judge it on the estates.</h2>
+      <p class="sec-copy">Leave your details and this week's report for your suburb lands in your inbox, free — every estate in probate, with the acting solicitor's name, firm, phone and email attached. If it's not worth a call, you'll never hear from us again.</p>
+      <p class="sec-copy">One agent per suburb, first come. Tell us the suburb you want and we'll confirm whether it's still open.</p>
+    </div>
+    <div class="form-card">
+      <form class="optin-form" data-source="vendor-intelligence-landing" novalidate>
+        <div class="form-row">
+          <label>Full name</label>
+          <input name="name" type="text" autocomplete="name" required placeholder="e.g. James Whitfield">
+        </div>
+        <div class="form-row">
+          <label>Work email</label>
+          <input name="email" type="email" autocomplete="email" required placeholder="you@youragency.com.au">
+        </div>
+        <div class="form-row">
+          <label>Phone</label>
+          <input name="phone" type="tel" autocomplete="tel" required placeholder="04XX XXX XXX">
+        </div>
+        <div class="form-row">
+          <label>Suburb you want to lock</label>
+          <input name="detail" type="text" required placeholder="e.g. Mosman NSW">
+        </div>
+        <button class="btn btn-gold" type="submit">Send me this week's report</button>
+        <div class="form-note">THIS WEEK'S REPORT FREE · NO CARD REQUIRED · CANCEL ANY TIME</div>
+        <div class="form-msg" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</div><!-- /vendor panel -->
 
 <footer>
   <div class="wrap">
     <div class="foot-left">
-      <div>© Distress Signals. Information service only — not legal or financial advice.</div>
-      <div>All records sourced from public registers and verifiable by action number.</div>
-      <div>Distress Signals is a NSW business owned and operated by UConnect (International) Pty Ltd · ACN 159 803 611 · ABN 38 159 803 611</div>
+      <div class="m-distress" style="display:none">© Distress Signals. Information service only — not legal or financial advice.</div>
+      <div class="m-vendor" style="display:none">© Vendor Intelligence. Information service only — not legal or financial advice.</div>
+      <div>All records sourced from public registers and verifiable by case number.</div>
+      <div class="m-distress" style="display:none">Distress Signals is a NSW business owned and operated by UConnect (International) Pty Ltd · ACN 159 803 611 · ABN 38 159 803 611</div>
+      <div class="m-vendor" style="display:none">Vendor Intelligence is a NSW business owned and operated by UConnect (International) Pty Ltd · ACN 159 803 611 · ABN 38 159 803 611</div>
     </div>
     <div class="footer-links">
       <a href="terms.html">Terms &amp; Conditions</a>
@@ -408,6 +575,113 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // ---------- product switcher ----------
+  var TITLES = {
+    distress: "Distress Signals — NSW Winding-Up Intelligence, Before the Hearing",
+    vendor: "Vendor Intelligence — Suburb-Exclusive Estate Intelligence for Agents"
+  };
+  var segs = Array.prototype.slice.call(document.querySelectorAll(".seg"));
+
+  function setMode(mode, opts) {
+    opts = opts || {};
+    if (mode !== "distress" && mode !== "vendor") mode = "distress";
+    document.body.setAttribute("data-mode", mode);
+    segs.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.target === mode)); });
+    // footer copyright line matching the active mode
+    document.querySelectorAll("footer .foot-left > div.m-distress, footer .foot-left > div.m-vendor").forEach(function (el) {
+      el.style.display = el.classList.contains("m-" + mode) ? "block" : "none";
+    });
+    document.title = TITLES[mode];
+    try { history.replaceState(null, "", "#" + mode); } catch (e) {}
+    if (window.__buildPanelAnims) window.__buildPanelAnims(mode);
+    if (opts.scroll) window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  segs.forEach(function (b) {
+    b.addEventListener("click", function () { setMode(b.dataset.target, { scroll: true }); });
+  });
+
+  // deep-link support: #vendor / ?mode=vendor
+  (function () {
+    var initial = "distress";
+    var h = (location.hash || "").replace("#", "");
+    var q = new URLSearchParams(location.search).get("mode");
+    if (h === "vendor" || q === "vendor") initial = "vendor";
+    else if (h === "distress" || q === "distress") initial = "distress";
+    setMode(initial);
+  })();
+
+  // ---------- same-page anchors (scroll via JS for sandboxed previews) ----------
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute("href");
+    if (id === "#" || !id) return;
+    var target = document.querySelector(id);
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  });
+
+  // ---------- lead capture (both forms) ----------
+  // To capture leads directly into your CRM, paste your form endpoint below
+  // (GoHighLevel inbound webhook, Formspree URL, etc). Leave blank to fall
+  // back to opening an email with the details pre-filled.
+  var FORM_ENDPOINT = "https://services.leadconnectorhq.com/hooks/Mf8u8bZ4PRZbFQBuWPoH/webhook-trigger/b005d7d0-7e1b-491d-b7e9-e6057e62dc32";
+  var FALLBACK_EMAIL = "hello@distresssignals.com.au";
+
+  document.querySelectorAll(".optin-form").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var msg = form.querySelector(".form-msg");
+      var isVendor = form.dataset.source === "vendor-intelligence-landing";
+      var data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        // "detail" is the segment (distress) or the suburb (vendor)
+        segment: isVendor ? "" : form.detail.value,
+        suburb: isVendor ? form.detail.value.trim() : "",
+        source: form.dataset.source
+      };
+      if (!data.name || !data.email || !data.phone || !form.detail.value.trim()) {
+        msg.className = "form-msg err";
+        msg.textContent = isVendor
+          ? "Please complete all four fields — suburb included, it's how we check availability."
+          : "Please complete all four fields — segment included, it's how we check seat availability.";
+        return;
+      }
+      var okText = isVendor
+        ? "Done — this week's report for " + data.suburb + " will be in your inbox shortly."
+        : "Done — tomorrow's brief will be in your inbox by 7am.";
+      if (FORM_ENDPOINT) {
+        var btn = form.querySelector("button"); btn.disabled = true;
+        fetch(FORM_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        }).then(function (r) {
+          if (!r.ok) throw new Error();
+          form.reset();
+          msg.className = "form-msg ok";
+          msg.textContent = okText;
+        }).catch(function () {
+          msg.className = "form-msg err";
+          msg.textContent = "Something went wrong sending your details. Email " + FALLBACK_EMAIL + " and we'll set you up manually.";
+        }).finally(function () { btn.disabled = false; });
+      } else {
+        var body = "Name: " + data.name + "%0D%0AEmail: " + data.email +
+                   "%0D%0APhone: " + data.phone +
+                   "%0D%0A" + (isVendor ? "Suburb: " + data.suburb : "Segment: " + data.segment);
+        window.location.href = "mailto:" + FALLBACK_EMAIL +
+          "?subject=" + encodeURIComponent("Founders intake — " + (isVendor ? data.suburb : data.segment)) +
+          "&body=" + body;
+        msg.className = "form-msg ok";
+        msg.textContent = "Your email app should open with the details filled in — just hit send.";
+      }
+    });
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
@@ -417,116 +691,126 @@
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   gsap.registerPlugin(ScrollTrigger);
 
-  /* ---------- hero entrance ---------- */
-  var intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-  intro
-    .from(".topbar", { y: -64, autoAlpha: 0, duration: .6 })
-    .from(".hero .eyebrow", { y: 24, autoAlpha: 0, duration: .5 }, "-=.2")
-    .from(".hero h1", { y: 44, autoAlpha: 0, duration: .7 }, "-=.25")
-    .from(".hero .lede", { y: 30, autoAlpha: 0, duration: .6 }, "-=.4")
-    .from(".hero .fact", { y: 20, autoAlpha: 0, duration: .5 }, "-=.35")
-    .from(".cta-row .btn", { y: 20, autoAlpha: 0, duration: .5, stagger: .12, clearProps: "transform" }, "-=.3")
-    .from(".dossier", { x: 90, autoAlpha: 0, duration: .9, ease: "power4.out" }, .4)
-    .from(".lead-card .f", { y: 14, autoAlpha: 0, duration: .35, stagger: .07 }, "-=.45")
-    .from(".stamp", { scale: 2.4, autoAlpha: 0, duration: .45, ease: "back.out(2.5)" }, "-=.1");
+  /* topbar + switcher entrance — once */
+  gsap.from(".topbar", { y: -64, autoAlpha: 0, duration: .6, ease: "power3.out" });
+  gsap.from(".switcher .seg", { y: 18, autoAlpha: 0, duration: .5, stagger: .1, ease: "power3.out", delay: .25, clearProps: "transform" });
 
-  /* dossier parallax as the hero scrolls away */
-  gsap.to(".dossier", {
-    yPercent: 10, ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
-  });
+  var ctx = null;
 
-  /* ---------- generic section-head reveals ---------- */
-  gsap.utils.toArray(".sec-head").forEach(function (el) {
-    gsap.from(el.children, {
-      y: 36, autoAlpha: 0, duration: .7, stagger: .12, ease: "power3.out",
-      scrollTrigger: { trigger: el, start: "top 82%" }
-    });
-  });
+  /* Build all in-panel animations, scoped to the active mode's panel so the
+     hidden panel's duplicate selectors are never touched. Re-runs on switch. */
+  window.__buildPanelAnims = function (mode) {
+    if (ctx) ctx.revert();
+    var panel = document.querySelector('.mode-panel.m-' + mode);
+    if (!panel) return;
 
-  /* ---------- the window: draw the line, pop the steps ---------- */
-  gsap.fromTo(".steps", { "--line-draw": 0 }, {
-    "--line-draw": 1, duration: 1.1, ease: "power2.inOut",
-    scrollTrigger: { trigger: ".steps", start: "top 80%" }
-  });
-  gsap.from(".step", {
-    y: 44, autoAlpha: 0, duration: .6, stagger: .16, ease: "power3.out",
-    scrollTrigger: { trigger: ".steps", start: "top 80%" }
-  });
-  gsap.from(".step .dot", {
-    scale: 0, duration: .45, stagger: .16, ease: "back.out(3)",
-    scrollTrigger: { trigger: ".steps", start: "top 80%" }
-  });
+    ctx = gsap.context(function () {
+      /* hero entrance */
+      gsap.timeline({ defaults: { ease: "power3.out" } })
+        .from(".hero .eyebrow", { y: 24, autoAlpha: 0, duration: .5 })
+        .from(".hero h1", { y: 44, autoAlpha: 0, duration: .7 }, "-=.25")
+        .from(".hero .lede", { y: 30, autoAlpha: 0, duration: .6 }, "-=.4")
+        .from(".hero .fact", { y: 20, autoAlpha: 0, duration: .5 }, "-=.35")
+        .from(".cta-row .btn", { y: 20, autoAlpha: 0, duration: .5, stagger: .12, clearProps: "transform" }, "-=.3")
+        .from(".dossier", { x: 90, autoAlpha: 0, duration: .9, ease: "power4.out" }, .1)
+        .from(".lead-card .f", { y: 14, autoAlpha: 0, duration: .35, stagger: .07 }, "-=.45")
+        .from(".stamp", { scale: 2.4, autoAlpha: 0, duration: .45, ease: "back.out(2.5)" }, "-=.1");
 
-  /* ---------- difference table ---------- */
-  gsap.from(".diff table", {
-    y: 40, autoAlpha: 0, duration: .6, ease: "power3.out",
-    scrollTrigger: { trigger: ".diff", start: "top 82%" }
-  });
-  gsap.from(".diff tbody tr", {
-    x: -32, autoAlpha: 0, duration: .5, stagger: .1, ease: "power2.out",
-    scrollTrigger: { trigger: ".diff", start: "top 78%" }
-  });
+      gsap.to(".dossier", {
+        yPercent: 10, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+      });
 
-  /* ---------- field cards ---------- */
-  gsap.from(".field-card", {
-    y: 48, autoAlpha: 0, duration: .6, ease: "power3.out",
-    stagger: { each: .09, grid: [2, 3], from: "start" },
-    scrollTrigger: { trigger: ".fields", start: "top 82%" }
-  });
+      gsap.utils.toArray(".sec-head").forEach(function (el) {
+        gsap.from(el.children, {
+          y: 36, autoAlpha: 0, duration: .7, stagger: .12, ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 82%" }
+        });
+      });
 
-  /* ---------- pricing: reveal + price count-up ---------- */
-  gsap.from(".pricing .eyebrow, .pricing h2", {
-    y: 32, autoAlpha: 0, duration: .65, stagger: .12, ease: "power3.out",
-    scrollTrigger: { trigger: ".pricing", start: "top 78%" }
-  });
-  gsap.from(".price-box .terms li", {
-    x: -28, autoAlpha: 0, duration: .55, stagger: .12, ease: "power2.out",
-    scrollTrigger: { trigger: ".pricing", start: "top 75%" }
-  });
-  gsap.from(".price-card", {
-    y: 56, autoAlpha: 0, scale: .94, duration: .8, ease: "power3.out",
-    scrollTrigger: { trigger: ".pricing", start: "top 75%" }
-  });
-  /* price winds DOWN from general-release $1,997 to the founders $1,490,
-     the old price gets struck through mid-fall, then the founders-only
-     line lights up gold once the number lands */
-  var amtEl = document.querySelector(".price-card .amt");
-  var strikeEl = document.querySelector(".anchor-price .strike");
-  var foundersEl = document.querySelector(".price-card .per.founders");
-  if (amtEl) {
-    var price = { v: 1997 };
-    amtEl.textContent = "$1,997";
-    if (strikeEl) gsap.set(strikeEl, { "--strike": 0 });
-    var drop = gsap.timeline({
-      scrollTrigger: { trigger: ".price-card", start: "top 80%" }
-    });
-    drop.to(price, {
-      v: 1490, duration: 2.8, ease: "power2.out",
-      onUpdate: function () { amtEl.textContent = "$" + Math.round(price.v).toLocaleString("en-AU"); },
-      onComplete: function () { amtEl.textContent = "$1,490"; }
-    });
-    if (strikeEl) drop.to(strikeEl, { "--strike": 1, duration: .6, ease: "power2.out" }, .4);
-    /* landing beat */
-    drop.to(amtEl, { scale: 1.08, duration: .25, ease: "power2.out" }, "-=.35")
-        .to(amtEl, { scale: 1, duration: .5, ease: "back.out(3)" });
-    if (foundersEl) {
-      drop.to(foundersEl, { color: "#C9A227", duration: .4, ease: "power2.out" }, "<")
-          .fromTo(foundersEl, { scale: 1 }, { scale: 1.1, duration: .3, ease: "power2.out", yoyo: true, repeat: 1 }, "<");
-    }
-  }
+      gsap.fromTo(".steps", { "--line-draw": 0 }, {
+        "--line-draw": 1, duration: 1.1, ease: "power2.inOut",
+        scrollTrigger: { trigger: ".steps", start: "top 80%" }
+      });
+      gsap.from(".step", {
+        y: 44, autoAlpha: 0, duration: .6, stagger: .16, ease: "power3.out",
+        scrollTrigger: { trigger: ".steps", start: "top 80%" }
+      });
+      gsap.from(".step .dot", {
+        scale: 0, duration: .45, stagger: .16, ease: "back.out(3)",
+        scrollTrigger: { trigger: ".steps", start: "top 80%" }
+      });
 
-  /* ---------- opt-in ---------- */
-  gsap.from(".optin .wrap > div:first-child > *", {
-    y: 30, autoAlpha: 0, duration: .6, stagger: .1, ease: "power3.out",
-    scrollTrigger: { trigger: ".optin", start: "top 78%" }
-  });
-  gsap.from(".form-card", {
-    y: 56, autoAlpha: 0, duration: .75, ease: "power3.out",
-    scrollTrigger: { trigger: ".optin", start: "top 78%" }
-  });
+      gsap.from(".diff table", {
+        y: 40, autoAlpha: 0, duration: .6, ease: "power3.out",
+        scrollTrigger: { trigger: ".diff", start: "top 82%" }
+      });
+      gsap.from(".diff tbody tr", {
+        x: -32, autoAlpha: 0, duration: .5, stagger: .1, ease: "power2.out",
+        scrollTrigger: { trigger: ".diff", start: "top 78%" }
+      });
 
-  /* keep trigger positions honest once webfonts settle */
+      gsap.from(".field-card", {
+        y: 48, autoAlpha: 0, duration: .6, ease: "power3.out",
+        stagger: { each: .09, grid: [2, 3], from: "start" },
+        scrollTrigger: { trigger: ".fields", start: "top 82%" }
+      });
+
+      gsap.from(".pricing .eyebrow, .pricing h2", {
+        y: 32, autoAlpha: 0, duration: .65, stagger: .12, ease: "power3.out",
+        scrollTrigger: { trigger: ".pricing", start: "top 78%" }
+      });
+      gsap.from(".price-box .terms li", {
+        x: -28, autoAlpha: 0, duration: .55, stagger: .12, ease: "power2.out",
+        scrollTrigger: { trigger: ".pricing", start: "top 75%" }
+      });
+      gsap.from(".price-card", {
+        y: 56, autoAlpha: 0, scale: .94, duration: .8, ease: "power3.out",
+        scrollTrigger: { trigger: ".pricing", start: "top 75%" }
+      });
+
+      /* price count-up — reads data-from / data-to. Distress winds DOWN from
+         the general-release anchor and strikes it through; vendor counts up. */
+      var amtEl = document.querySelector('.mode-panel.m-' + mode + ' .price-card .amt');
+      if (amtEl) {
+        var from = parseInt(amtEl.getAttribute("data-from"), 10);
+        var to = parseInt(amtEl.getAttribute("data-to"), 10);
+        var strikeEl = amtEl.parentElement.querySelector(".anchor-price .strike");
+        var foundersEl = amtEl.parentElement.querySelector(".per.founders");
+        var price = { v: from };
+        amtEl.textContent = "$" + from.toLocaleString("en-AU");
+        if (strikeEl) gsap.set(strikeEl, { "--strike": 0 });
+        var drop = gsap.timeline({ scrollTrigger: { trigger: amtEl, start: "top 85%" } });
+        drop.to(price, {
+          v: to, duration: 2.4, ease: "power2.out",
+          onUpdate: function () { amtEl.textContent = "$" + Math.round(price.v).toLocaleString("en-AU"); },
+          onComplete: function () { amtEl.textContent = "$" + to.toLocaleString("en-AU"); }
+        });
+        if (strikeEl) drop.to(strikeEl, { "--strike": 1, duration: .6, ease: "power2.out" }, .4);
+        drop.to(amtEl, { scale: 1.08, duration: .25, ease: "power2.out" }, "-=.35")
+            .to(amtEl, { scale: 1, duration: .5, ease: "back.out(3)" });
+        if (foundersEl) {
+          drop.to(foundersEl, { color: "#C9A227", duration: .4, ease: "power2.out" }, "<")
+              .fromTo(foundersEl, { scale: 1 }, { scale: 1.1, duration: .3, ease: "power2.out", yoyo: true, repeat: 1 }, "<");
+        }
+      }
+
+      gsap.from(".optin .wrap > div:first-child > *", {
+        y: 30, autoAlpha: 0, duration: .6, stagger: .1, ease: "power3.out",
+        scrollTrigger: { trigger: ".optin", start: "top 78%" }
+      });
+      gsap.from(".form-card", {
+        y: 56, autoAlpha: 0, duration: .75, ease: "power3.out",
+        scrollTrigger: { trigger: ".optin", start: "top 78%" }
+      });
+    }, panel);
+
+    ScrollTrigger.refresh();
+  };
+
+  /* build for whatever mode the switcher landed on */
+  window.__buildPanelAnims(document.body.getAttribute("data-mode") || "distress");
+
   window.addEventListener("load", function () { ScrollTrigger.refresh(); });
 })();
 </script>
