@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Intelligence — Mosman | 19 Pre-Market Signals Last Month</title>
+<style>
+  :root{
+    --navy:#122442; --navy2:#1B3358; --gold:#C9A227; --gold-soft:#E8D9A0;
+    --ink:#1A1A1A; --grey:#6B7280; --line:#D8DDE6; --bg:#F5F7FA;
+    --red:#B42318; --green:#1E7A46;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:#fff;line-height:1.65}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
+
+  /* header */
+  .masthead{background:var(--navy);border-bottom:4px solid var(--gold);padding:34px 0 30px}
+  .kicker{color:var(--gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px}
+  .masthead h1{color:#fff;font-size:34px;font-weight:700;line-height:1.15}
+  .masthead h1 .thin{color:#B9C4D6;font-weight:400}
+  .masthead .sub{color:#B9C4D6;font-size:15px;margin-top:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .masthead .sub b{color:var(--gold-soft)}
+
+  /* hero claim */
+  .hero{padding:46px 0 8px}
+  .hero h2{font-size:30px;line-height:1.25;color:var(--navy);margin-bottom:18px}
+  .hero h2 em{font-style:normal;border-bottom:3px solid var(--gold)}
+  .hero p{font-size:18px;margin-bottom:16px}
+  .hero .lead{font-size:19px;color:var(--navy)}
+
+  /* math block */
+  .math{background:var(--navy);color:#fff;border-radius:10px;padding:28px 30px;margin:30px 0}
+  .math h3{color:var(--gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+  .math .row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.14);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15.5px}
+  .math .row:last-child{border-bottom:none}
+  .math .row .v{color:var(--gold-soft);font-weight:700;text-align:right;white-space:nowrap}
+  .math .punch{margin-top:14px;font-size:17px;color:#fff}
+  .math .punch b{color:var(--gold)}
+
+  /* sections */
+  section{padding:26px 0}
+  h2.sec{font-size:24px;color:var(--navy);margin-bottom:14px;line-height:1.3}
+  p{margin-bottom:14px;font-size:16.5px}
+  .rule{height:1px;background:var(--line);margin:8px 0}
+
+  /* objection cards */
+  .obj{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:8px;padding:20px 22px;margin:16px 0;background:#fff}
+  .obj .q{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-weight:700;color:var(--navy);font-size:16px;margin-bottom:8px}
+  .obj p{font-size:15.5px;margin-bottom:8px}
+  .obj p:last-child{margin-bottom:0}
+
+  /* stack */
+  .stack{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:26px 28px;margin:22px 0}
+  .stack h3{color:var(--navy);font-size:20px;margin-bottom:14px}
+  .stack .item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15.5px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .stack .item:last-of-type{border-bottom:none}
+  .stack .tick{color:var(--gold);font-weight:700;flex:0 0 auto}
+  .stack .item b{color:var(--navy)}
+
+  /* guarantee */
+  .guar{border:2px solid var(--green);border-radius:10px;padding:22px 26px;margin:22px 0;background:#F4FAF6}
+  .guar h3{color:var(--green);font-size:18px;margin-bottom:8px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .guar p{font-size:15.5px;margin-bottom:0}
+
+  /* scarcity + cta */
+  .scarce{background:var(--navy);border-radius:10px;padding:30px;margin:26px 0;text-align:center}
+  .scarce .pill{display:inline-block;background:var(--gold);color:var(--navy);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-weight:800;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    border-radius:999px;padding:7px 18px;margin-bottom:16px}
+  .scarce h3{color:#fff;font-size:24px;margin-bottom:10px}
+  .scarce p{color:#B9C4D6;font-size:15.5px;max-width:520px;margin:0 auto 22px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .btn{display:inline-block;background:var(--gold);color:var(--navy);text-decoration:none;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-weight:800;font-size:17px;padding:15px 36px;border-radius:8px}
+  .btn:hover{background:#d9b544}
+  .scarce .after{margin-top:14px;margin-bottom:0;font-size:13px;color:#8FA0B8}
+
+  /* sample strip */
+  .sample{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:20px 0;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .sample .bar{background:var(--navy);color:var(--gold);font-size:11.5px;font-weight:700;
+    letter-spacing:.18em;text-transform:uppercase;padding:10px 18px}
+  .sample .body{padding:18px 20px}
+  .sample .nm{font-weight:800;color:var(--navy);font-size:17px}
+  .sample .meta{color:var(--grey);font-size:13px;margin:2px 0 12px}
+  .sample .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}
+  .sample .cell .lbl{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+  .sample .cell .val{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .sample .tagrow{margin-bottom:10px}
+  .sample .tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;
+    border-radius:999px;padding:4px 12px;color:#fff}
+  .tag.probate{background:#B45309}.tag.live{background:var(--green)}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:22px 0 40px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:12.5px;color:var(--grey)}
+  footer p{font-size:12.5px;margin-bottom:6px}
+
+  @media (max-width:560px){
+    .masthead h1{font-size:26px}
+    .hero h2{font-size:24px}
+    .sample .grid{grid-template-columns:1fr}
+    .math .row{flex-direction:column;gap:2px}
+    .math .row .v{text-align:left}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="wrap">
+    <div class="kicker">Vendor Intelligence &nbsp;·&nbsp; Suburb Report</div>
+    <h1>19 Mosman properties signalled a sale last month. <span class="thin">The listings haven't happened yet.</span></h1>
+    <div class="sub">Early seller signals from public registers, courts &amp; planning data — delivered weekly to <b>one agent per suburb</b>.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <p class="lead">Last month, an agent on the lower north shore found out about a listing the way most agents do — when the competitor's sign went up. The estate's solicitor had been instructed four months earlier. It was sitting on the public record the whole time.</p>
+    <p>Every week, properties in Mosman quietly enter a pre-sale process — probate notices, company distress events, DA decisions — months before a photographer ever visits. The information is public. Almost nobody reads it, because it lives in registries agents never check.</p>
+    <p><strong>Vendor Intelligence reads them for you.</strong> One page, once a week, only for Mosman: the estate or property, the acting solicitor and their direct phone and email, the registry case number, the date the notice went public, and the expected sale window.</p>
+  </div>
+
+  <div class="math sans">
+    <h3>Do the maths on your own patch</h3>
+    <div class="row"><span>Pre-market signals detected in Mosman, last 4 weeks</span><span class="v">19</span></div>
+    <div class="row"><span>Approx. GCI on one Mosman listing (at ~$5m median)</span><span class="v">$75,000+</span></div>
+    <div class="row"><span>Signals the report must convert per YEAR to pay for itself</span><span class="v">1</span></div>
+    <div class="row"><span>Agents in Mosman who will ever receive this report</span><span class="v">1</span></div>
+    <p class="punch">If one signal a year becomes one listing, everything after it is <b>margin</b>. Nineteen arrived last month.</p>
+  </div>
+
+  <section>
+    <h2 class="sec">What a signal looks like</h2>
+    <div class="sample">
+      <div class="bar">Sample card — from the 21 July Mosman edition</div>
+      <div class="body">
+        <div class="tagrow"><span class="tag probate">PROBATE</span>&nbsp;<span class="tag live">LIVE</span></div>
+        <div class="nm">Estate — Mosman</div>
+        <div class="meta">Mosman · Application · NSW Online Registry case no. supplied in full report</div>
+        <div class="grid">
+          <div class="cell"><div class="lbl">Acting solicitor</div><div class="val">Name, firm &amp; address — supplied</div></div>
+          <div class="cell"><div class="lbl">Solicitor contact</div><div class="val">Direct phone &amp; email — supplied</div></div>
+          <div class="cell"><div class="lbl">Notice published</div><div class="val">Exact date, e.g. 6 Jul 2026</div></div>
+          <div class="cell"><div class="lbl">Expected sale window</div><div class="val">e.g. Dec – Jun 2026</div></div>
+        </div>
+      </div>
+    </div>
+    <p>The estate's solicitor is the person who instructs the sale. You're reading their name and number months before the family talks to an agent.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">"But it's a deceased estate — won't the family just keep it?"</h2>
+    <p>Fair question. Three things you should know before you decide this isn't for you:</p>
+
+    <div class="obj">
+      <div class="q">1. Probate is the starting gun, not the finish line.</div>
+      <p>When someone dies owning property, the executor can't sell or transfer the house until the Supreme Court of NSW grants probate. Before applying, their solicitor must publish a public notice. That notice is the earliest public moment an estate starts moving — and it's what this report captures, the day it appears.</p>
+    </div>
+
+    <div class="obj">
+      <div class="q">2. "Goes to next of kin" means the value — not the house.</div>
+      <p>Beneficiaries inherit the estate's value. Three siblings can't live in one house, so a $5m Mosman property almost always has to become cash to be split. Most beneficiaries are in their 50s and 60s with homes and mortgages of their own. An inherited house is an illiquid windfall, not a home.</p>
+    </div>
+
+    <div class="obj">
+      <div class="q">3. There's a tax clock running.</div>
+      <p>Sell an inherited main residence within two years of the date of death and the sale is generally CGT-exempt. Hold it longer and that exemption can be lost. Add insurance, rates, land-tax exposure and an empty house bleeding money, and the keep-it option gets expensive fast. Some families do keep the property — which is why this is sold as 19 signals, not 19 listings. The maths above already prices that in.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="stack sans">
+      <h3>What you get, every week</h3>
+      <div class="item"><span class="tick">✓</span><span><b>The Mosman signal report</b> — every probate, distress, DA and aged-listing signal detected that week, on one page.</span></div>
+      <div class="item"><span class="tick">✓</span><span><b>The acting solicitor's direct contact</b> — name, firm, phone, email. The person who instructs the sale.</span></div>
+      <div class="item"><span class="tick">✓</span><span><b>Exact notice publication dates</b> — so you know how fresh every signal is before you pick up the phone.</span></div>
+      <div class="item"><span class="tick">✓</span><span><b>Expected sale windows</b> — each signal scored with when it's statistically likely to reach market.</span></div>
+      <div class="item"><span class="tick">✓</span><span><b>The Active Signal Book</b> — every previously reported signal whose window is still open, so nothing slips.</span></div>
+      <div class="item"><span class="tick">✓</span><span><b>Suburb exclusivity</b> — while you hold Mosman, no other agent ever sees this report.</span></div>
+    </div>
+
+    <div class="guar">
+      <h3>The guarantee</h3>
+      <p>If your first month's reports don't put real, verifiable signals in front of you, you don't pay for it. You risk one phone call's worth of time; the downside is zero.</p>
+    </div>
+  </section>
+
+  <div class="scarce">
+    <span class="pill sans">One agent per suburb — permanently</span>
+    <h3>When Mosman locks, it's locked.</h3>
+    <p>Every signal goes to one agent alone. Everyone else finds out the old way — when the sign goes up. If Mosman is taken by the time you look, you can join the waitlist for adjacent suburbs.</p>
+    <a class="btn" href="https://www.uconnect.com.au/#contact">Claim Mosman&nbsp;→</a>
+    <p class="after">David · Vendor Intelligence · <a href="tel:+61404244484" style="color:#B9C4D6;text-decoration:none">0404 244 484</a> · <a href="mailto:david@distresssignals.info" style="color:#B9C4D6;text-decoration:none">david@distresssignals.info</a></p>
+  </div>
+
+  <footer>
+    <p>Vendor Intelligence is an information service built solely from public records — NSW court registries, ASIC notices and planning data. It is not legal or financial advice, and no representation is made that any property will be offered for sale. Probate-sourced entries contain no contact details of private individuals, executors or families — only the publicly listed business contacts of acting solicitors.</p>
+    <p>Estimated GCI is illustrative, based on an approximate Mosman median and typical commission rates.</p>
+  </footer>
+
+</div>
+</body>
+</html>
