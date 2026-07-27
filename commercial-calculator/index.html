@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commercial Property Investment Calculator — Australia</title>
+<meta name="description" content="A risk-first calculator for buying multi-tenant commercial property in Australia: what you can buy, what it pays, what happens under stress, and whether to split your cash across assets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <div class="brand-name">Commercial Property Investment Calculator</div>
+        <div class="brand-sub">Australia · mid-2026 · RBA cash rate 4.35%, tightening bias</div>
+      </div>
+    </div>
+    <div class="mode-toggle" role="group" aria-label="Calculation mode">
+      <button type="button" class="mode-btn" data-mode="simple" aria-pressed="true">Simple</button>
+      <button type="button" class="mode-btn" data-mode="advanced" aria-pressed="false">Advanced</button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile compact summary bar -->
+<div class="mobile-summary" id="mobileSummary" aria-hidden="true">
+  <div class="ms-item"><span class="ms-label">You could buy</span><span class="ms-value" id="msPrice">—</span></div>
+  <div class="ms-item"><span class="ms-label">Cash-on-cash</span><span class="ms-value" id="msCoC">—</span></div>
+  <div class="ms-item"><span class="ms-label">ICR</span><span class="ms-value" id="msICR">—</span></div>
+</div>
+
+<div class="layout">
+
+  <!-- ============================= INPUTS ============================= -->
+  <aside class="inputs" id="inputsPanel">
+
+    <section class="accordion" data-open="true" id="grp-cash">
+      <button type="button" class="accordion-head">
+        <span>1 · Cash</span><span class="chev">︾</span>
+      </button>
+      <div class="accordion-body">
+        <label class="field">
+          <span class="field-label">Cash available</span>
+          <div class="input-money">
+            <span>$</span>
+            <input type="number" id="cash" min="0" step="10000" value="2000000">
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <section class="accordion" data-open="true" id="grp-leverage">
+      <button type="button" class="accordion-head">
+        <span>2 · Leverage</span><span class="chev">︾</span>
+      </button>
+      <div class="accordion-body">
+        <label class="field">
+          <span class="field-label">LVR <b id="lvrVal">50%</b></span>
+          <input type="range" id="lvr" min="0" max="0.80" step="0.01" value="0.50" class="slider slider-lvr">
+          <div class="slider-ticks">
+            <span>0%</span><span class="tick-note">65% typical bank ceiling</span><span>80% specialist</span>
+          </div>
+        </label>
+        <label class="field">
+          <span class="field-label">Interest rate <b id="interestRateVal">7.00%</b></span>
+          <input type="range" id="interestRate" min="0.05" max="0.14" step="0.0005" value="0.07" class="slider">
+          <div class="slider-ticks"><span>6.25%</span><span>7.5%</span><span>9% private credit floor</span></div>
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Repayment</span>
+          <select id="repaymentType">
+            <option value="io" selected>Interest only</option>
+            <option value="pi">Principal &amp; interest</option>
+          </select>
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Loan term (years)</span>
+          <input type="number" id="loanTermYears" min="1" max="30" value="15">
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Facility review (years)</span>
+          <input type="number" id="facilityReviewYears" min="1" max="15" value="3">
+        </label>
+      </div>
+    </section>
+
+    <section class="accordion" id="grp-asset">
+      <button type="button" class="accordion-head">
+        <span>3 · The asset</span><span class="chev">︾</span>
+      </button>
+      <div class="accordion-body">
+        <label class="field field-inline">
+          <span class="field-label">State</span>
+          <select id="state">
+            <option value="NSW">NSW</option><option value="VIC">VIC</option>
+            <option value="QLD" selected>QLD</option><option value="WA">WA</option>
+            <option value="SA">SA</option><option value="ACT">ACT</option>
+            <option value="NT">NT</option><option value="TAS">TAS</option>
+          </select>
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Number of assets</span>
+          <input type="number" id="numberOfAssets" min="1" max="4" value="1">
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Tenants per asset</span>
+          <input type="number" id="tenantsPerAsset" min="1" max="30" value="4">
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Lease type</span>
+          <select id="leaseType">
+            <option value="gross">Gross</option>
+            <option value="net" selected>Net</option>
+            <option value="triple-net">Triple net</option>
+          </select>
+        </label>
+        <p class="hint" id="leaseTypeHint"></p>
+
+        <div class="simple-only">
+          <label class="field">
+            <span class="field-label">Target net yield <b id="netYieldVal">6.0%</b></span>
+            <input type="range" id="netYield" min="0.02" max="0.12" step="0.001" value="0.06" class="slider">
+          </label>
+        </div>
+
+        <div class="advanced-only" hidden>
+          <label class="field">
+            <span class="field-label">Gross yield <b id="grossYieldVal">7.0%</b></span>
+            <input type="range" id="grossYield" min="0.02" max="0.14" step="0.001" value="0.07" class="slider">
+          </label>
+          <label class="field">
+            <span class="field-label">Outgoings, % of base rent <b id="outgoingsPctOfRentVal">22%</b></span>
+            <input type="range" id="outgoingsPctOfRent" min="0.05" max="0.45" step="0.005" value="0.22" class="slider">
+          </label>
+          <label class="field">
+            <span class="field-label">Outgoings recovery rate <b id="outgoingsRecoveryRateVal">85%</b></span>
+            <input type="range" id="outgoingsRecoveryRate" min="0" max="1" step="0.01" value="0.85" class="slider">
+          </label>
+          <label class="field field-check">
+            <input type="checkbox" id="landTaxRecoverable" checked>
+            <span>Land tax recoverable from tenants</span>
+          </label>
+          <p class="hint" id="landTaxHint"></p>
+          <label class="field">
+            <span class="field-label">Management fee <b id="managementFeePctVal">6%</b></span>
+            <input type="range" id="managementFeePct" min="0" max="0.15" step="0.005" value="0.06" class="slider">
+          </label>
+          <label class="field">
+            <span class="field-label">Capex reserve, % of rent <b id="capexReservePctVal">5%</b></span>
+            <input type="range" id="capexReservePct" min="0" max="0.15" step="0.005" value="0.05" class="slider">
+          </label>
+          <label class="field">
+            <span class="field-label">Structural vacancy <b id="structuralVacancyRateVal">5%</b></span>
+            <input type="range" id="structuralVacancyRate" min="0" max="0.30" step="0.005" value="0.05" class="slider">
+          </label>
+        </div>
+
+        <label class="field field-check">
+          <input type="checkbox" id="retailTenancy">
+          <span>One or more tenancies is retail</span>
+        </label>
+        <p class="hint warning" id="retailHint" hidden>State retail leases legislation overrides the lease on outgoings disclosure and recovery. Estimates must be issued annually and reconciled — some costs cannot be passed on at all.</p>
+
+        <p class="hint">Tenanted commercial property usually sells GST-free as a going concern, but this must be confirmed in the contract. If it isn't, add 10% to the funding requirement.</p>
+      </div>
+    </section>
+
+    <section class="accordion" id="grp-costs">
+      <button type="button" class="accordion-head">
+        <span>4 · Acquisition costs</span><span class="chev">︾</span>
+      </button>
+      <div class="accordion-body">
+        <label class="field">
+          <span class="field-label">Stamp duty <b id="stampDutyPctVal">5.75%</b></span>
+          <input type="range" id="stampDutyPct" min="0.02" max="0.08" step="0.001" value="0.0575" class="slider">
+        </label>
+        <p class="hint">Indicative only. Confirm with the relevant state revenue office.</p>
+        <label class="field">
+          <span class="field-label">Legal &amp; other <b id="legalAndOtherPctVal">0.5%</b></span>
+          <input type="range" id="legalAndOtherPct" min="0" max="0.02" step="0.001" value="0.005" class="slider">
+        </label>
+        <label class="field field-inline">
+          <span class="field-label">Due diligence, per asset</span>
+          <div class="input-money"><span>$</span><input type="number" id="dueDiligenceCostPerAsset" min="0" step="1000" value="22000"></div>
+        </label>
+      </div>
+    </section>
+
+    <section class="accordion" id="grp-hold">
+      <button type="button" class="accordion-head">
+        <span>5 · The hold</span><span class="chev">︾</span>
+      </button>
+      <div class="accordion-body">
+        <label class="field">
+          <span class="field-label">Hold period <b id="holdYearsVal">5 years</b></span>
+          <input type="range" id="holdYears" min="1" max="15" step="1" value="5" class="slider">
+          <p class="hint warning" id="holdYearsHint" hidden>Under 5 years, round-trip costs alone are roughly 8–10% of the deal.</p>
+        </label>
+        <label class="field">
+          <span class="field-label">Rent growth <b id="rentGrowthVal">3.0%</b></span>
+          <input type="range" id="rentGrowth" min="0" max="0.08" step="0.0025" value="0.03" class="slider">
+        </label>
+        <label class="field">
+          <span class="field-label">Outgoings inflation <b id="outgoingsInflationVal">4.0%</b></span>
+          <input type="range" id="outgoingsInflation" min="0" max="0.10" step="0.0025" value="0.04" class="slider">
+        </label>
+        <label class="field">
+          <span class="field-label">Exit cap rate <b id="exitCapRateVal">—</b></span>
+          <input type="range" id="exitCapRate" min="0.035" max="0.10" step="0.00025" value="0.06" class="slider">
+          <p class="hint" id="exitCapDeltaHint"></p>
+        </label>
+        <label class="field">
+          <span class="field-label">Selling costs <b id="sellingCostPctVal">2.5%</b></span>
+          <input type="range" id="sellingCostPct" min="0" max="0.06" step="0.0025" value="0.025" class="slider">
+        </label>
+      </div>
+    </section>
+
+    <button type="button" class="btn-reset" id="resetBtn">Reset to defaults</button>
+  </aside>
+
+  <!-- ============================= RESULTS ============================= -->
+  <main class="results" id="resultsPanel">
+
+    <div id="errorBanner" class="error-banner" hidden></div>
+
+    <section class="hero-metric" id="heroMetric">
+      <div class="hero-label">What you could buy</div>
+      <div class="hero-value" id="heroPrice">$0</div>
+      <div class="hero-sub" id="heroSub"></div>
+    </section>
+
+    <section class="metric-strip" id="metricStrip"></section>
+
+    <section class="panel">
+      <h2>Equity over time</h2>
+      <p class="panel-sub">Worst, base and best case. Shaded band shows the spread between them.</p>
+      <div id="equityChartWrap"></div>
+      <div class="legend">
+        <span class="legend-item"><i class="sw sw-worst"></i>Worst</span>
+        <span class="legend-item"><i class="sw sw-base"></i>Base</span>
+        <span class="legend-item"><i class="sw sw-best"></i>Best</span>
+      </div>
+    </section>
+
+    <section class="panel" id="advicePanel">
+      <h2>What this means</h2>
+      <div id="adviceList"></div>
+      <button type="button" class="btn-link" id="showAllAdvice" hidden>Show all</button>
+    </section>
+
+    <section class="panel">
+      <h2>Annual cash flow</h2>
+      <p class="panel-sub">Base case. NOI above the line, debt service below it, net cash flow as the line.</p>
+      <div id="cashFlowChartWrap"></div>
+    </section>
+
+    <section class="panel">
+      <h2>If a tenant leaves</h2>
+      <p class="panel-sub">How many tenancies can you lose before the building stops paying for itself?</p>
+      <div id="breakEvenChartWrap"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Sensitivity — rate and exit cap</h2>
+      <p class="panel-sub">Equity multiple at exit. The two variables you don't control usually dominate the outcome.</p>
+      <div id="sensitivityChartWrap"></div>
+    </section>
+
+    <section class="panel" id="portfolioModule">
+      <h2>One property, or split the cash?</h2>
+      <p class="panel-sub">The full model, run again for 1–4 assets.</p>
+      <div class="portfolio-metric-toggle" id="portfolioMetricToggle">
+        <button type="button" data-metric="cashOnCash" class="active">Cash-on-cash</button>
+        <button type="button" data-metric="equityRemaining">Worst-case equity remaining</button>
+        <button type="button" data-metric="concentration">Tenant concentration</button>
+        <button type="button" data-metric="purchasingPower">Purchasing power</button>
+      </div>
+      <div id="portfolioChartWrap"></div>
+      <div id="portfolioTableWrap"></div>
+      <div id="portfolioRecommendations"></div>
+    </section>
+
+    <section class="panel" id="assumptionsSummary">
+      <h2>Assumptions summary</h2>
+      <div id="assumptionsGrid"></div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="disclaimer">
+  <p>Indicative modelling only. Not financial, tax, or legal advice. Stamp duty, land tax, GST and retail leases legislation vary by state and by transaction structure — confirm all of them with a licensed adviser and the relevant state revenue office before committing capital. Outputs are only as good as the assumptions, and the assumptions are estimates.</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
