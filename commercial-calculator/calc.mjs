@@ -38,7 +38,7 @@ export const DEFAULT_INPUTS = {
   legalAndOtherPct: 0.005,
   dueDiligenceCostPerAsset: 22_000,
   holdYears: 5,
-  rentGrowth: 0.030,
+  rentGrowth: 0.040, // fixed annual increase clause written into every lease
   outgoingsInflation: 0.040,
   exitCapRate: null, // derived from netYield if null: see deriveEntryCapRate
   sellingCostPct: 0.025,

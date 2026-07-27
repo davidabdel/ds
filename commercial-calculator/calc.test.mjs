@@ -88,12 +88,24 @@ test('advanced-mode NOI waterfall is internally consistent (EGI - nonRecoverable
 });
 
 test('outgoingsInflation > rentGrowth compresses NOI margin over the hold (base scenario)', () => {
-  const inputs = { ...DEFAULT_INPUTS, mode: 'advanced', holdYears: 10 };
+  const inputs = { ...DEFAULT_INPUTS, mode: 'advanced', holdYears: 10, rentGrowth: 0.03, outgoingsInflation: 0.04 };
   const results = computeAll(inputs);
   const base = results.scenarios.base;
   const marginYear1 = base.years[0].NOI / base.years[0].baseRent;
   const marginYear10 = base.years[9].NOI / base.years[9].baseRent;
   assert.ok(marginYear10 < marginYear1, 'NOI margin should compress, not improve, by default');
+});
+
+test('the 4% fixed lease-increase default compounds into a higher property value at exit', () => {
+  const lower = computeAll({ ...DEFAULT_INPUTS, mode: 'advanced', holdYears: 5, rentGrowth: 0.02 });
+  const higher = computeAll({ ...DEFAULT_INPUTS, mode: 'advanced', holdYears: 5, rentGrowth: 0.04 });
+  const lowerExitValue = lower.scenarios.base.years[4].value;
+  const higherExitValue = higher.scenarios.base.years[4].value;
+  assert.ok(higherExitValue > lowerExitValue, 'a higher fixed rent increase should raise projected NOI and thus exit value');
+});
+
+test('DEFAULT_INPUTS.rentGrowth reflects the standard 4% p.a. lease increase clause', () => {
+  assert.equal(DEFAULT_INPUTS.rentGrowth, 0.04);
 });
 
 console.log(`\n${passed} passed`);
