@@ -89,6 +89,9 @@ const PERCENT_SLIDER_IDS = Object.keys(PCT_DECIMALS);
 const SELECT_IDS = ['repaymentType', 'state', 'leaseType'];
 const CHECKBOX_IDS = ['landTaxRecoverable', 'retailTenancy'];
 
+const CASH_SLIDER_MIN = 100_000;
+const CASH_SLIDER_MAX = 10_000_000;
+
 function bindInputs() {
   for (const id of NUMERIC_IDS) {
     document.getElementById(id).addEventListener('input', (e) => {
@@ -96,6 +99,9 @@ function bindInputs() {
       dispatch({ [id]: isFinite(v) ? v : 0 });
     });
   }
+  document.getElementById('cashSlider').addEventListener('input', (e) => {
+    dispatch({ cash: Number(e.target.value) });
+  });
   for (const id of PERCENT_SLIDER_IDS) {
     document.getElementById(id).addEventListener('input', (e) => {
       dispatch({ [id]: Number(e.target.value), __fromSlider: id === 'exitCapRate' });
@@ -158,6 +164,7 @@ function bindInputs() {
 
 function syncInputsFromState() {
   for (const id of NUMERIC_IDS) document.getElementById(id).value = state[id];
+  document.getElementById('cashSlider').value = Math.min(CASH_SLIDER_MAX, Math.max(CASH_SLIDER_MIN, state.cash));
   for (const id of PERCENT_SLIDER_IDS) {
     const el = document.getElementById(id);
     el.value = state[id];
