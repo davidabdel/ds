@@ -1,6 +1,6 @@
 import {
   DEFAULT_INPUTS, STAMP_DUTY_DEFAULTS, LAND_TAX_RECOVERABLE_DEFAULTS, LEASE_TYPE_RECOVERY_RATE,
-  deriveEntryCapRate, computeAll, computeSensitivityGrid, computePortfolioSplit,
+  SCENARIO_OVERLAYS, deriveEntryCapRate, computeAll, computeSensitivityGrid, computePortfolioSplit,
   generateAdvice, generatePortfolioRecommendations,
   fmtMoney, fmtPct, fmtX,
 } from './calc.mjs';
@@ -215,7 +215,7 @@ function render() {
   const errorBanner = document.getElementById('errorBanner');
   const heroSection = document.getElementById('heroMetric');
   const bodySections = [
-    'metricStrip', 'advicePanel', 'equityChartWrap', 'cashFlowChartWrap',
+    'scenarioKey', 'metricStrip', 'advicePanel', 'equityChartWrap', 'exitSummaryWrap', 'cashFlowChartWrap',
     'breakEvenChartWrap', 'sensitivityChartWrap', 'portfolioModule', 'assumptionsSummary',
   ];
 
@@ -235,9 +235,11 @@ function render() {
   bodySections.forEach((id) => { const s = document.getElementById(id).closest('section'); if (s) s.hidden = false; });
 
   renderHero(results);
+  renderScenarioKey();
   renderMetricStrip(results);
   renderAdvice(results);
   renderEquityChart(results);
+  renderExitSummary(results);
   renderCashFlowChart(results);
   renderBreakEvenChart(results);
   scheduleSensitivityRender(results);
@@ -257,6 +259,55 @@ function renderHero(results) {
   const perAsset = state.numberOfAssets > 1 ? ` · ${fmtMoney(results.purchase.pricePerAsset)} per asset across ${state.numberOfAssets}` : '';
   document.getElementById('heroSub').textContent =
     `Loan ${fmtMoney(results.purchase.loan)} at ${pct('lvr', state.lvr)} LVR · equity in ${fmtMoney(results.purchase.equityIn)}${perAsset}`;
+}
+
+function fmtDeltaPct(v) {
+  const s = Math.abs(v * 100).toFixed(2).replace(/\.?0+$/, '');
+  return `${s}%`;
+}
+
+function renderScenarioKey() {
+  const w = SCENARIO_OVERLAYS.worst, b = SCENARIO_OVERLAYS.best;
+  document.getElementById('scenarioKey').innerHTML = `
+    <div class="scenario-key-item worst">
+      <div class="sk-title">Worst case</div>
+      <div class="sk-body">Rates rise ${fmtDeltaPct(w.interestRateDelta)}, you lose your largest tenant for a year and re-let ${fmtDeltaPct(-0.05)} cheaper, rent doesn't grow that year, and the cap rate softens ${fmtDeltaPct(w.exitCapRateDelta)} — buyers pay less for the same income.</div>
+    </div>
+    <div class="scenario-key-item base">
+      <div class="sk-title">Base case</div>
+      <div class="sk-body">Exactly what you've entered on the left. No shocks, no windfalls — your numbers, run forward.</div>
+    </div>
+    <div class="scenario-key-item best">
+      <div class="sk-title">Best case</div>
+      <div class="sk-body">Rates fall ${fmtDeltaPct(b.interestRateDelta)}, the cap rate firms ${fmtDeltaPct(b.exitCapRateDelta)}, rent grows ${fmtDeltaPct(b.rentGrowthDelta)} faster than you assumed, and every tenancy stays full.</div>
+    </div>
+  `;
+}
+
+function renderExitSummary(results) {
+  document.getElementById('exitSummarySub').textContent =
+    `What you'd actually be left with after ${state.holdYears} year${state.holdYears === 1 ? '' : 's'}, if you sold on these assumptions.`;
+  const rows = [
+    ['worst', 'Worst'],
+    ['base', 'Base'],
+    ['best', 'Best'],
+  ];
+  document.getElementById('exitSummaryWrap').innerHTML = `
+    <div class="exit-summary-grid">
+      ${rows.map(([key, label]) => {
+        const s = results.scenarios[key];
+        const loanLeft = s.years[s.years.length - 1].closingBalance;
+        return `
+        <div class="exit-summary-card ${key}">
+          <div class="esc-title">${label}</div>
+          <div class="esc-row"><span>Property worth</span><b>${fmtMoney(s.grossSale)}</b></div>
+          <div class="esc-row"><span>Loan remaining</span><b>${fmtMoney(loanLeft)}</b></div>
+          <div class="esc-row esc-highlight"><span>What you'd walk away with</span><b>${fmtMoney(s.netSale)}</b></div>
+          <div class="esc-row"><span>Return on your cash</span><b>${fmtX(s.equityMultiple)} · ${fmtPct(s.irr)}/yr</b></div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
 }
 
 function renderMetricStrip(results) {

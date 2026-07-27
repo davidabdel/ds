@@ -148,6 +148,32 @@ input[type="number"], select {
 .metric-pass { color: var(--best); font-weight: 700; }
 .metric-fail { color: var(--worst); font-weight: 700; }
 
+/* ---------------- scenario key ---------------- */
+.scenario-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.scenario-key-item { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--grey-soft); border-radius: 8px; padding: 14px 16px; }
+.scenario-key-item.worst { border-left-color: var(--worst); }
+.scenario-key-item.base { border-left-color: var(--ink); }
+.scenario-key-item.best { border-left-color: var(--best); }
+.sk-title { font-family: var(--mono); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.scenario-key-item.worst .sk-title { color: var(--worst); }
+.scenario-key-item.best .sk-title { color: var(--best); }
+.sk-body { font-size: 0.8rem; color: var(--grey); line-height: 1.45; }
+
+/* ---------------- exit summary ---------------- */
+.exit-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.exit-summary-card { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.exit-summary-card.worst { border-color: var(--worst); background: var(--critical-bg); }
+.exit-summary-card.base { background: var(--paper); }
+.exit-summary-card.best { border-color: var(--best); background: var(--positive-bg); }
+.esc-title { font-family: var(--mono); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; color: var(--grey); }
+.exit-summary-card.worst .esc-title { color: var(--worst); }
+.exit-summary-card.best .esc-title { color: var(--best); }
+.esc-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: 0.82rem; gap: 10px; }
+.esc-row span { color: var(--grey); }
+.esc-row b { font-family: var(--mono); font-weight: 600; text-align: right; }
+.esc-row.esc-highlight { border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin: 4px 0; padding: 8px 0; }
+.esc-row.esc-highlight b { font-size: 1rem; }
+
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
 .panel h2 { font-size: 1.02rem; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
 .panel-sub { font-size: 0.82rem; color: var(--grey); margin: 0 0 14px; }
