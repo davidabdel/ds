@@ -46,7 +46,13 @@ export const DEFAULT_INPUTS = {
   largestTenantPct: null, // manual override for tenant concentration
   smallLotYieldPremiumPerAsset: 0.0015,
   rateUpliftPerExtraAsset: 0.0010,
+  bankRate: 0.05, // comparison-only: leaving the same cash in a term deposit instead
 };
+
+// A simple, uniform ±20% dial for the plain-language view — deliberately cruder
+// than the worst/base/best engine above (no rate/vacancy/cap-rate modelling),
+// for an investor who wants "roughly how wrong could this be" in one number.
+export const SIMPLE_SCENARIO_FACTORS = { worst: 0.8, predicted: 1.0, best: 1.2 };
 
 export const SCENARIO_OVERLAYS = {
   worst: { interestRateDelta: 0.02, exitCapRateDelta: 0.015, rentGrowthOverride: 0, vacancyOverride: null, tenantLossEvent: true },
@@ -311,6 +317,58 @@ export function runScenario(inputs, purchase, financials, concentration, overlay
     vacancy: overlay.vacancyOverride != null ? overlay.vacancyOverride : inputs.structuralVacancyRate,
     tenantLossEvent: overlay.tenantLossEvent,
   });
+}
+
+// --- Plain-language "simple" view -------------------------------------------
+// A single, fixed-rate-held-flat trajectory (no rate rises, no tenant-loss event —
+// just the entered rent growth compounding), for an investor who wants one clear
+// story rather than three parallel scenarios. The ±20% dial scales income and
+// value uniformly rather than modelling individual shocks.
+
+export function computeSimpleProjection(inputs, purchase, financials, concentration, years = 10) {
+  return runCustomScenario({ ...inputs, holdYears: years }, purchase, financials, concentration, {
+    interestRate: inputs.interestRate,
+    exitCapRate: inputs.exitCapRate,
+    rentGrowth: inputs.rentGrowth,
+    vacancy: inputs.structuralVacancyRate,
+    tenantLossEvent: false,
+  }).years;
+}
+
+export function applySimpleStressFactor(years, factor) {
+  return years.map((y) => {
+    const NOI = y.NOI * factor;
+    const value = y.value * factor;
+    const CFBT = NOI - y.debtService;
+    return { ...y, NOI, value, CFBT };
+  });
+}
+
+export function bankValueAtYear(cash, bankRate, t) {
+  return cash * Math.pow(1 + bankRate, t);
+}
+
+// Cash already collected up to year t, plus what selling at year t would net —
+// the two components of "what you'd walk away with", kept separate so each is
+// individually visible, not just the sum.
+export function deriveExitAtYear(years, t, inputs) {
+  const idx = Math.min(t, years.length) - 1;
+  const upTo = years.slice(0, idx + 1);
+  const cumCFBT = upTo.reduce((sum, y) => sum + y.CFBT, 0);
+  const last = years[idx];
+  const netSale = last.value * (1 - inputs.sellingCostPct) - last.closingBalance;
+  const totalWalkAway = cumCFBT + netSale;
+  const bankValue = bankValueAtYear(inputs.cash, inputs.bankRate, idx + 1);
+  return {
+    year: idx + 1,
+    propertyValue: last.value,
+    loanRemaining: last.closingBalance,
+    cumCFBT,
+    netSale,
+    totalWalkAway,
+    bankValue,
+    aheadOfBankBy: totalWalkAway - bankValue,
+  };
 }
 
 // Day-one metrics under a scenario overlay: applies the overlay's rate shock and

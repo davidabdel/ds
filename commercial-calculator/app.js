@@ -1,6 +1,7 @@
 import {
   DEFAULT_INPUTS, STAMP_DUTY_DEFAULTS, LAND_TAX_RECOVERABLE_DEFAULTS, LEASE_TYPE_RECOVERY_RATE,
-  SCENARIO_OVERLAYS, deriveEntryCapRate, computeAll, computeSensitivityGrid, computePortfolioSplit,
+  SCENARIO_OVERLAYS, SIMPLE_SCENARIO_FACTORS, deriveEntryCapRate, computeAll, computeSensitivityGrid,
+  computePortfolioSplit, computeSimpleProjection, applySimpleStressFactor, deriveExitAtYear,
   generateAdvice, generatePortfolioRecommendations,
   fmtMoney, fmtPct, fmtX,
 } from './calc.mjs';
@@ -17,13 +18,14 @@ const state = {
   exitCapRateTouched: false,
   adviceExpanded: false,
   portfolioMetric: 'cashOnCash',
+  simpleScenario: 'predicted',
 };
 
 const PCT_DECIMALS = {
   lvr: 0, interestRate: 2, netYield: 1, grossYield: 1, outgoingsPctOfRent: 1,
   outgoingsRecoveryRate: 0, managementFeePct: 1, capexReservePct: 1, structuralVacancyRate: 1,
   stampDutyPct: 2, legalAndOtherPct: 2, rentGrowth: 1, outgoingsInflation: 1,
-  exitCapRate: 3, sellingCostPct: 1,
+  exitCapRate: 3, sellingCostPct: 1, bankRate: 1,
 };
 
 function pct(key, v) {
@@ -138,11 +140,12 @@ function bindInputs() {
   document.getElementById('resetBtn').addEventListener('click', () => {
     Object.assign(state, DEFAULT_INPUTS, {
       exitCapRate: deriveEntryCapRate(DEFAULT_INPUTS), exitCapRateTouched: false,
-      adviceExpanded: false, portfolioMetric: 'cashOnCash',
+      adviceExpanded: false, portfolioMetric: 'cashOnCash', simpleScenario: 'predicted',
     });
     document.querySelectorAll('.mode-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)));
     document.querySelectorAll('.simple-only').forEach((el) => { el.hidden = state.mode !== 'simple'; });
     document.querySelectorAll('.advanced-only').forEach((el) => { el.hidden = state.mode !== 'advanced'; });
+    document.querySelectorAll('#simpleScenarioToggle button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.scenario === 'predicted')));
     syncInputsFromState();
     render();
   });
@@ -158,6 +161,15 @@ function bindInputs() {
       btn.classList.add('active');
       state.portfolioMetric = btn.dataset.metric;
       renderPortfolio(lastResults);
+    });
+  });
+
+  document.querySelectorAll('#simpleScenarioToggle button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#simpleScenarioToggle button').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      state.simpleScenario = btn.dataset.scenario;
+      render();
     });
   });
 }
@@ -214,9 +226,10 @@ function render() {
 
   const errorBanner = document.getElementById('errorBanner');
   const heroSection = document.getElementById('heroMetric');
+  const advancedSection = document.getElementById('advancedAnalysis');
   const bodySections = [
-    'scenarioKey', 'metricStrip', 'advicePanel', 'equityChartWrap', 'exitSummaryWrap', 'cashFlowChartWrap',
-    'breakEvenChartWrap', 'sensitivityChartWrap', 'portfolioModule', 'assumptionsSummary',
+    'simpleScenarioToggle', 'simpleCashFlowChartWrap', 'sellSummaryWrap', 'advicePanel',
+    'breakEvenChartWrap', 'portfolioModule', 'assumptionsSummary',
   ];
 
   if (results.error) {
@@ -225,6 +238,7 @@ function render() {
       ? `Your cash doesn't cover the fixed due-diligence costs for ${state.numberOfAssets} asset(s) (${fmtMoney(state.dueDiligenceCostPerAsset * state.numberOfAssets)}). Reduce the number of assets or increase your cash.`
       : 'This LVR and cost combination is not viable — reduce LVR or acquisition cost assumptions.';
     heroSection.hidden = true;
+    advancedSection.hidden = true;
     bodySections.forEach((id) => { document.getElementById(id).closest('section').hidden = true; });
     updateMobileSummary(null);
     return;
@@ -232,20 +246,31 @@ function render() {
 
   errorBanner.hidden = true;
   heroSection.hidden = false;
+  advancedSection.hidden = state.mode !== 'advanced';
   bodySections.forEach((id) => { const s = document.getElementById(id).closest('section'); if (s) s.hidden = false; });
 
+  const simpleYears = applySimpleStressFactor(
+    computeSimpleProjection(state, results.purchase, results.financials, results.concentration, 10),
+    SIMPLE_SCENARIO_FACTORS[state.simpleScenario]
+  );
+
   renderHero(results);
-  renderScenarioKey();
-  renderMetricStrip(results);
+  renderSimpleCashFlow(simpleYears);
+  renderSellSummary(simpleYears);
   renderAdvice(results);
-  renderEquityChart(results);
-  renderExitSummary(results);
-  renderCashFlowChart(results);
   renderBreakEvenChart(results);
-  scheduleSensitivityRender(results);
   renderPortfolio(results);
   renderAssumptions(results);
   updateMobileSummary(results);
+
+  if (state.mode === 'advanced') {
+    renderScenarioKey();
+    renderMetricStrip(results);
+    renderEquityChart(results);
+    renderExitSummary(results);
+    renderCashFlowChart(results);
+    scheduleSensitivityRender(results);
+  }
 }
 
 function updateMobileSummary(results) {
@@ -304,6 +329,47 @@ function renderExitSummary(results) {
           <div class="esc-row"><span>Loan remaining</span><b>${fmtMoney(loanLeft)}</b></div>
           <div class="esc-row esc-highlight"><span>What you'd walk away with</span><b>${fmtMoney(s.netSale)}</b></div>
           <div class="esc-row"><span>Return on your cash</span><b>${fmtX(s.equityMultiple)} · ${fmtPct(s.irr)}/yr</b></div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderSimpleCashFlow(years) {
+  const scenarioNote = {
+    worst: ' (worst case: everything 20% below plan)',
+    predicted: '',
+    best: ' (best case: everything 20% above plan)',
+  }[state.simpleScenario];
+  document.getElementById('simpleCashFlowSub').textContent =
+    `Assuming rent grows ${pct('rentGrowth', state.rentGrowth)} a year as entered, and your interest rate stays flat at ${pct('interestRate', state.interestRate)}${scenarioNote}.`;
+  document.getElementById('simpleCashFlowChartWrap').innerHTML = cashFlowChart({
+    years: years.map((y) => y.t),
+    noi: years.map((y) => y.NOI),
+    debtService: years.map((y) => y.debtService),
+    netCF: years.map((y) => y.CFBT),
+  });
+}
+
+function renderSellSummary(years) {
+  document.getElementById('sellSummarySub').textContent =
+    `Cash collected along the way, plus what selling would net you, at two points in the hold.`;
+  const points = [5, 10].filter((t) => t <= years.length);
+  document.getElementById('sellSummaryWrap').innerHTML = `
+    <div class="exit-summary-grid">
+      ${points.map((t) => {
+        const e = deriveExitAtYear(years, t, state);
+        const ahead = e.aheadOfBankBy >= 0;
+        return `
+        <div class="exit-summary-card ${state.simpleScenario === 'worst' ? 'worst' : state.simpleScenario === 'best' ? 'best' : 'base'}">
+          <div class="esc-title">After ${e.year} years</div>
+          <div class="esc-row"><span>Property worth then</span><b>${fmtMoney(e.propertyValue)}</b></div>
+          <div class="esc-row"><span>Loan remaining</span><b>${fmtMoney(e.loanRemaining)}</b></div>
+          <div class="esc-row"><span>Cash already collected</span><b>${fmtMoney(e.cumCFBT)}</b></div>
+          <div class="esc-row"><span>Net proceeds from selling</span><b>${fmtMoney(e.netSale)}</b></div>
+          <div class="esc-row esc-highlight"><span>Total you'd walk away with</span><b>${fmtMoney(e.totalWalkAway)}</b></div>
+          <div class="esc-row"><span>Cash in the bank instead, at ${pct('bankRate', state.bankRate)}</span><b>${fmtMoney(e.bankValue)}</b></div>
+          <div class="esc-row"><span>${ahead ? 'Ahead of the bank by' : 'Behind the bank by'}</span><b class="${ahead ? 'esc-good' : 'esc-bad'}">${fmtMoney(Math.abs(e.aheadOfBankBy))}</b></div>
         </div>`;
       }).join('')}
     </div>

@@ -240,25 +240,31 @@
       <div class="hero-sub" id="heroSub"></div>
     </section>
 
-    <section class="scenario-key" id="scenarioKey"></section>
+    <section class="simple-scenario-toggle" id="simpleScenarioToggle" role="group" aria-label="Outlook">
+      <button type="button" data-scenario="worst">Worst<span>−20%</span></button>
+      <button type="button" data-scenario="predicted" aria-pressed="true">Predicted</button>
+      <button type="button" data-scenario="best">Best<span>+20%</span></button>
+    </section>
 
-    <section class="metric-strip" id="metricStrip"></section>
-
-    <section class="panel">
-      <h2>Equity over time</h2>
-      <p class="panel-sub">Worst, base and best case. Shaded band shows the spread between them.</p>
-      <div id="equityChartWrap"></div>
+    <section class="panel" id="simpleCashFlowPanel">
+      <h2>Cash flow, year by year</h2>
+      <p class="panel-sub" id="simpleCashFlowSub"></p>
+      <div id="simpleCashFlowChartWrap"></div>
       <div class="legend">
-        <span class="legend-item"><i class="sw sw-worst"></i>Worst</span>
-        <span class="legend-item"><i class="sw sw-base"></i>Base</span>
-        <span class="legend-item"><i class="sw sw-best"></i>Best</span>
+        <span class="legend-item"><i class="sw sw-base"></i>Cash the property generates</span>
+        <span class="legend-item"><i class="sw sw-worst"></i>Your loan repayment</span>
+        <span class="legend-item"><i class="sw sw-best"></i>Net cash in your pocket</span>
       </div>
     </section>
 
-    <section class="panel" id="exitSummaryPanel">
-      <h2>At the end of your hold</h2>
-      <p class="panel-sub" id="exitSummarySub"></p>
-      <div id="exitSummaryWrap"></div>
+    <section class="panel" id="sellSummaryPanel">
+      <h2>If you sold</h2>
+      <p class="panel-sub" id="sellSummarySub"></p>
+      <label class="field bank-rate-field">
+        <span class="field-label">Compared with leaving the cash in the bank at <b id="bankRateVal">5.0%</b> p.a., compounded</span>
+        <input type="range" id="bankRate" min="0" max="0.10" step="0.0025" value="0.05" class="slider">
+      </label>
+      <div id="sellSummaryWrap"></div>
     </section>
 
     <section class="panel" id="advicePanel">
@@ -268,21 +274,9 @@
     </section>
 
     <section class="panel">
-      <h2>Annual cash flow</h2>
-      <p class="panel-sub">Base case. NOI above the line, debt service below it, net cash flow as the line.</p>
-      <div id="cashFlowChartWrap"></div>
-    </section>
-
-    <section class="panel">
       <h2>If a tenant leaves</h2>
       <p class="panel-sub">How many tenancies can you lose before the building stops paying for itself?</p>
       <div id="breakEvenChartWrap"></div>
-    </section>
-
-    <section class="panel">
-      <h2>Sensitivity — rate and exit cap</h2>
-      <p class="panel-sub">Equity multiple at exit. The two variables you don't control usually dominate the outcome.</p>
-      <div id="sensitivityChartWrap"></div>
     </section>
 
     <section class="panel" id="portfolioModule">
@@ -303,6 +297,46 @@
       <h2>Assumptions summary</h2>
       <div id="assumptionsGrid"></div>
     </section>
+
+    <div class="advanced-only" id="advancedAnalysis" hidden>
+      <div class="advanced-divider">
+        <h2>Full risk analysis</h2>
+        <p>For the more analytical investor: how a rate rise, a lost tenant and a softer cap rate interact — instead of a single ±20% guess.</p>
+      </div>
+
+      <section class="scenario-key" id="scenarioKey"></section>
+
+      <section class="metric-strip" id="metricStrip"></section>
+
+      <section class="panel">
+        <h2>Equity over time</h2>
+        <p class="panel-sub">Worst, base and best case. Shaded band shows the spread between them.</p>
+        <div id="equityChartWrap"></div>
+        <div class="legend">
+          <span class="legend-item"><i class="sw sw-worst"></i>Worst</span>
+          <span class="legend-item"><i class="sw sw-base"></i>Base</span>
+          <span class="legend-item"><i class="sw sw-best"></i>Best</span>
+        </div>
+      </section>
+
+      <section class="panel" id="exitSummaryPanel">
+        <h2>At the end of your hold — worst / base / best</h2>
+        <p class="panel-sub" id="exitSummarySub"></p>
+        <div id="exitSummaryWrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Annual cash flow — base case</h2>
+        <p class="panel-sub">Over your actual hold period, exactly as entered. NOI above the line, debt service below it, net cash flow as the line.</p>
+        <div id="cashFlowChartWrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Sensitivity — rate and exit cap</h2>
+        <p class="panel-sub">Equity multiple at exit. The two variables you don't control usually dominate the outcome.</p>
+        <div id="sensitivityChartWrap"></div>
+      </section>
+    </div>
 
   </main>
 </div>

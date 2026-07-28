@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import {
   DEFAULT_INPUTS, computePurchaseCapacity, computeOperatingFinancials,
   monthlyPI, computeBreakEvenOccupancy, breakEvenOccupancyByBisection,
-  irr, computeAll,
+  irr, computeAll, computeSimpleProjection, applySimpleStressFactor,
+  bankValueAtYear, deriveExitAtYear,
 } from './calc.mjs';
 
 let passed = 0;
@@ -106,6 +107,38 @@ test('the 4% fixed lease-increase default compounds into a higher property value
 
 test('DEFAULT_INPUTS.rentGrowth reflects the standard 4% p.a. lease increase clause', () => {
   assert.equal(DEFAULT_INPUTS.rentGrowth, 0.04);
+});
+
+test('computeSimpleProjection always returns the requested number of years, independent of holdYears', () => {
+  const inputs = { ...DEFAULT_INPUTS, mode: 'advanced', holdYears: 5 };
+  const results = computeAll(inputs);
+  const years = computeSimpleProjection(inputs, results.purchase, results.financials, results.concentration, 10);
+  assert.equal(years.length, 10, 'should project a fixed 10 years regardless of the holdYears slider');
+});
+
+test('applySimpleStressFactor scales income and value but leaves the loan untouched', () => {
+  const inputs = { ...DEFAULT_INPUTS, mode: 'advanced' };
+  const results = computeAll(inputs);
+  const years = computeSimpleProjection(inputs, results.purchase, results.financials, results.concentration, 10);
+  const scaled = applySimpleStressFactor(years, 1.2);
+  approx(scaled[0].NOI, years[0].NOI * 1.2, 0.01, 'NOI should scale by the factor');
+  approx(scaled[0].value, years[0].value * 1.2, 0.01, 'value should scale by the factor');
+  assert.equal(scaled[0].debtService, years[0].debtService, 'loan repayment is a fixed obligation, not scaled');
+  approx(scaled[0].CFBT, scaled[0].NOI - scaled[0].debtService, 0.01, 'CFBT should be recomputed from scaled NOI');
+});
+
+test('bankValueAtYear compounds annually', () => {
+  approx(bankValueAtYear(100_000, 0.05, 10), 100_000 * Math.pow(1.05, 10), 0.01, 'compound growth');
+});
+
+test('deriveExitAtYear sums cash collected plus net sale proceeds, and compares against the bank', () => {
+  const inputs = { ...DEFAULT_INPUTS, mode: 'advanced', bankRate: 0.05 };
+  const results = computeAll(inputs);
+  const years = computeSimpleProjection(inputs, results.purchase, results.financials, results.concentration, 10);
+  const exit = deriveExitAtYear(years, 5, inputs);
+  approx(exit.totalWalkAway, exit.cumCFBT + exit.netSale, 0.01, 'totalWalkAway is additive');
+  approx(exit.bankValue, inputs.cash * Math.pow(1.05, 5), 0.01, 'bank comparison compounds at bankRate');
+  approx(exit.aheadOfBankBy, exit.totalWalkAway - exit.bankValue, 0.01, 'delta vs bank');
 });
 
 console.log(`\n${passed} passed`);
