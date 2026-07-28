@@ -324,15 +324,25 @@ export function runScenario(inputs, purchase, financials, concentration, overlay
 // just the entered rent growth compounding), for an investor who wants one clear
 // story rather than three parallel scenarios. The ±20% dial scales income and
 // value uniformly rather than modelling individual shocks.
+//
+// Deliberately does NOT re-derive NOI from the outgoings waterfall each year
+// (the way the worst/base/best engine does) — it grows the actual entry NOI
+// straight through at the entered rent-increase rate. Re-deriving from the
+// waterfall would quietly compound the small gap between the headline yield
+// and the waterfall's own implied yield, understating growth over 5-10 years
+// in a way that isn't visible from a single year's numbers.
 
-export function computeSimpleProjection(inputs, purchase, financials, concentration, years = 10) {
-  return runCustomScenario({ ...inputs, holdYears: years }, purchase, financials, concentration, {
-    interestRate: inputs.interestRate,
-    exitCapRate: inputs.exitCapRate,
-    rentGrowth: inputs.rentGrowth,
-    vacancy: inputs.structuralVacancyRate,
-    tenantLossEvent: false,
-  }).years;
+export function computeSimpleProjection(inputs, purchase, financials, years = 10) {
+  const schedule = buildAmortizationSchedule(purchase.loan, inputs.interestRate, inputs.loanTermYears, inputs.repaymentType, years);
+  const out = [];
+  for (let t = 1; t <= years; t++) {
+    const NOI = financials.NOI * Math.pow(1 + inputs.rentGrowth, t);
+    const debt = schedule[t - 1];
+    const value = inputs.exitCapRate > 0 ? NOI / inputs.exitCapRate : 0;
+    const CFBT = NOI - debt.debtService;
+    out.push({ t, NOI, value, debtService: debt.debtService, interest: debt.interest, closingBalance: debt.closingBalance, CFBT });
+  }
+  return out;
 }
 
 export function applySimpleStressFactor(years, factor) {
@@ -346,6 +356,10 @@ export function applySimpleStressFactor(years, factor) {
 
 export function bankValueAtYear(cash, bankRate, t) {
   return cash * Math.pow(1 + bankRate, t);
+}
+
+export function compoundGrowth(rate, years) {
+  return Math.pow(1 + rate, years) - 1;
 }
 
 // Cash already collected up to year t, plus what selling at year t would net —

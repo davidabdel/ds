@@ -1,7 +1,7 @@
 import {
   DEFAULT_INPUTS, STAMP_DUTY_DEFAULTS, LAND_TAX_RECOVERABLE_DEFAULTS, LEASE_TYPE_RECOVERY_RATE,
   SCENARIO_OVERLAYS, SIMPLE_SCENARIO_FACTORS, deriveEntryCapRate, computeAll, computeSensitivityGrid,
-  computePortfolioSplit, computeSimpleProjection, applySimpleStressFactor, deriveExitAtYear,
+  computePortfolioSplit, computeSimpleProjection, applySimpleStressFactor, deriveExitAtYear, compoundGrowth,
   generateAdvice, generatePortfolioRecommendations,
   fmtMoney, fmtPct, fmtX,
 } from './calc.mjs';
@@ -250,7 +250,7 @@ function render() {
   bodySections.forEach((id) => { const s = document.getElementById(id).closest('section'); if (s) s.hidden = false; });
 
   const simpleYears = applySimpleStressFactor(
-    computeSimpleProjection(state, results.purchase, results.financials, results.concentration, 10),
+    computeSimpleProjection(state, results.purchase, results.financials, 10),
     SIMPLE_SCENARIO_FACTORS[state.simpleScenario]
   );
 
@@ -355,8 +355,10 @@ function renderSimpleCashFlow(years) {
 }
 
 function renderSellSummary(years) {
+  const g5 = compoundGrowth(state.rentGrowth, 5);
+  const g10 = compoundGrowth(state.rentGrowth, 10);
   document.getElementById('sellSummarySub').textContent =
-    `Cash collected along the way, plus what selling would net you, at two points in the hold.`;
+    `Property value compounds at exactly ${pct('rentGrowth', state.rentGrowth)} a year (cap rate held flat) — that's +${fmtPct(g5)} over 5 years and +${fmtPct(g10)} over 10 years, before the ${state.simpleScenario === 'predicted' ? 'predicted' : state.simpleScenario} adjustment below. Plus cash collected along the way, and what selling would net you.`;
   const points = [5, 10].filter((t) => t <= years.length);
   document.getElementById('sellSummaryWrap').innerHTML = `
     <div class="exit-summary-grid">

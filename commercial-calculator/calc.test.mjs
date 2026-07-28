@@ -112,14 +112,14 @@ test('DEFAULT_INPUTS.rentGrowth reflects the standard 4% p.a. lease increase cla
 test('computeSimpleProjection always returns the requested number of years, independent of holdYears', () => {
   const inputs = { ...DEFAULT_INPUTS, mode: 'advanced', holdYears: 5 };
   const results = computeAll(inputs);
-  const years = computeSimpleProjection(inputs, results.purchase, results.financials, results.concentration, 10);
+  const years = computeSimpleProjection(inputs, results.purchase, results.financials, 10);
   assert.equal(years.length, 10, 'should project a fixed 10 years regardless of the holdYears slider');
 });
 
 test('applySimpleStressFactor scales income and value but leaves the loan untouched', () => {
   const inputs = { ...DEFAULT_INPUTS, mode: 'advanced' };
   const results = computeAll(inputs);
-  const years = computeSimpleProjection(inputs, results.purchase, results.financials, results.concentration, 10);
+  const years = computeSimpleProjection(inputs, results.purchase, results.financials, 10);
   const scaled = applySimpleStressFactor(years, 1.2);
   approx(scaled[0].NOI, years[0].NOI * 1.2, 0.01, 'NOI should scale by the factor');
   approx(scaled[0].value, years[0].value * 1.2, 0.01, 'value should scale by the factor');
@@ -131,10 +131,22 @@ test('bankValueAtYear compounds annually', () => {
   approx(bankValueAtYear(100_000, 0.05, 10), 100_000 * Math.pow(1.05, 10), 0.01, 'compound growth');
 });
 
+test('computeSimpleProjection compounds property value at exactly the entered rent increase, not a diluted rate', () => {
+  for (const mode of ['simple', 'advanced']) {
+    const inputs = { ...DEFAULT_INPUTS, mode, rentGrowth: 0.04 };
+    const results = computeAll(inputs);
+    const years = computeSimpleProjection(inputs, results.purchase, results.financials, 10);
+    // value(0) should equal today's NOI / exit cap rate exactly -- no silent step-down at year zero
+    const value0 = results.financials.NOI / inputs.exitCapRate;
+    approx(years[0].value, value0 * 1.04, value0 * 0.0001, `${mode}: year 1 should be exactly one year of compounding above today's value`);
+    approx(years[9].value, value0 * Math.pow(1.04, 10), value0 * 0.0001, `${mode}: year 10 should compound at exactly 4%/yr, not a diluted waterfall-derived rate`);
+  }
+});
+
 test('deriveExitAtYear sums cash collected plus net sale proceeds, and compares against the bank', () => {
   const inputs = { ...DEFAULT_INPUTS, mode: 'advanced', bankRate: 0.05 };
   const results = computeAll(inputs);
-  const years = computeSimpleProjection(inputs, results.purchase, results.financials, results.concentration, 10);
+  const years = computeSimpleProjection(inputs, results.purchase, results.financials, 10);
   const exit = deriveExitAtYear(years, 5, inputs);
   approx(exit.totalWalkAway, exit.cumCFBT + exit.netSale, 0.01, 'totalWalkAway is additive');
   approx(exit.bankValue, inputs.cash * Math.pow(1.05, 5), 0.01, 'bank comparison compounds at bankRate');
