@@ -2,11 +2,15 @@
 
 const NS = 'http://www.w3.org/2000/svg';
 
+function escapeAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function el(tag, attrs = {}, children = []) {
   const parts = [`<${tag}`];
   for (const [k, v] of Object.entries(attrs)) {
     if (v == null) continue;
-    parts.push(` ${k}="${v}"`);
+    parts.push(` ${k}="${escapeAttr(v)}"`);
   }
   if (children.length === 0) return parts.join('') + '/>';
   return parts.join('') + '>' + children.join('') + `</${tag}>`;
@@ -20,7 +24,7 @@ function scaleLinear(domain, range) {
 
 // --- 8.1 Equity over time ------------------------------------------------
 
-export function equityChart({ years, worst, base, best, initialCash, reviewYear, width = 640, height = 300 }) {
+export function equityChart({ years, worst, base, best, initialCash, reviewYear, tooltips, width = 640, height = 300 }) {
   const margin = { top: 16, right: 16, bottom: 28, left: 64 };
   const w = width - margin.left - margin.right;
   const h = height - margin.top - margin.bottom;
@@ -41,6 +45,12 @@ export function equityChart({ years, worst, base, best, initialCash, reviewYear,
 
   const reviewX = reviewYear != null && reviewYear <= years.length - 1 ? x(reviewYear) : null;
 
+  const colW = years.length > 1 ? w / (years.length - 1) : w;
+  const hitColumns = tooltips ? years.map((_, i) => el('rect', {
+    x: (x(i) - colW / 2).toFixed(1), y: 0, width: colW.toFixed(1), height: h.toFixed(1),
+    fill: 'transparent', 'pointer-events': 'all', 'data-tooltip': tooltips[i],
+  })) : [];
+
   const parts = [];
   parts.push(el('g', { transform: `translate(${margin.left},${margin.top})` }, [
     ...ticks.map((t) => el('line', { x1: 0, x2: w, y1: y(t).toFixed(1), y2: y(t).toFixed(1), stroke: 'var(--line)', 'stroke-width': 1 })),
@@ -54,18 +64,20 @@ export function equityChart({ years, worst, base, best, initialCash, reviewYear,
     el('path', { d: path(base), fill: 'none', stroke: 'var(--ink)', 'stroke-width': 2.5 }),
     el('path', { d: path(best), fill: 'none', stroke: 'var(--best)', 'stroke-width': 2 }),
     ...years.map((_, i) => el('text', { x: x(i).toFixed(1), y: h + 18, 'text-anchor': 'middle', class: 'chart-label' }, [`Y${i}`])),
+    ...hitColumns,
   ]));
   return `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" role="img" aria-label="Equity over time, worst base best">${parts.join('')}</svg>`;
 }
 
 // --- 8.2 Annual cash flow -------------------------------------------------
 
-export function cashFlowChart({ years, noi, debtService, netCF, width = 640, height = 300 }) {
+export function cashFlowChart({ years, noi, debtService, netCF, tooltips, width = 640, height = 300 }) {
   const margin = { top: 16, right: 40, bottom: 28, left: 56 };
   const w = width - margin.left - margin.right;
   const h = height - margin.top - margin.bottom;
   const n = years.length;
   const bw = (w / n) * 0.6;
+  const colW = w / n;
 
   const yMax = Math.max(...noi, 1) * 1.15;
   const yMin = Math.min(0, ...debtService.map((d) => -d)) * 1.15;
@@ -89,6 +101,11 @@ export function cashFlowChart({ years, noi, debtService, netCF, width = 640, hei
   const linePts = netCF.map((v, i) => `${x(i) + bw / 2},${yCF(v).toFixed(1)}`);
   const line = 'M' + linePts.join(' L');
 
+  const hitColumns = tooltips ? years.map((_, i) => el('rect', {
+    x: (colW * i).toFixed(1), y: 0, width: colW.toFixed(1), height: h.toFixed(1),
+    fill: 'transparent', 'pointer-events': 'all', 'data-tooltip': tooltips[i],
+  })) : [];
+
   const parts = [];
   parts.push(el('g', { transform: `translate(${margin.left},${margin.top})` }, [
     el('line', { x1: 0, x2: w, y1: zero.toFixed(1), y2: zero.toFixed(1), stroke: 'var(--line)', 'stroke-width': 1 }),
@@ -96,6 +113,7 @@ export function cashFlowChart({ years, noi, debtService, netCF, width = 640, hei
     el('path', { d: line, fill: 'none', stroke: 'var(--best)', 'stroke-width': 2 }),
     ...netCF.map((v, i) => el('circle', { cx: (x(i) + bw / 2).toFixed(1), cy: yCF(v).toFixed(1), r: 3, fill: v < 0 ? 'var(--worst)' : 'var(--best)' })),
     ...years.map((_, i) => el('text', { x: (x(i) + bw / 2).toFixed(1), y: h + 18, 'text-anchor': 'middle', class: 'chart-label' }, [`Y${i + 1}`])),
+    ...hitColumns,
   ]));
   return `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" role="img" aria-label="Annual cash flow: NOI, debt service, net cash flow">${parts.join('')}</svg>`;
 }

@@ -348,6 +348,9 @@ function renderSimpleCashFlow(years) {
     noi: years.map((y) => y.NOI),
     debtService: years.map((y) => y.debtService),
     netCF: years.map((y) => y.CFBT),
+    tooltips: years.map((y) =>
+      `Year ${y.t}\nCash the property generates: ${fmtMoney(y.NOI)}\nYour loan repayment: ${fmtMoney(y.debtService)}\nNet cash in your pocket: ${fmtMoney(y.CFBT)}`
+    ),
   });
 }
 
@@ -433,10 +436,14 @@ function renderEquityChart(results) {
   const { scenarios } = results;
   const n = scenarios.base.years.length;
   const series = (scen) => [state.cash, ...scen.years.map((y) => y.equity)];
+  const worstS = series(scenarios.worst), baseS = series(scenarios.base), bestS = series(scenarios.best);
   document.getElementById('equityChartWrap').innerHTML = equityChart({
     years: Array.from({ length: n + 1 }, (_, i) => i),
-    worst: series(scenarios.worst), base: series(scenarios.base), best: series(scenarios.best),
+    worst: worstS, base: baseS, best: bestS,
     initialCash: state.cash, reviewYear: state.facilityReviewYears,
+    tooltips: worstS.map((_, i) =>
+      `Year ${i}\nWorst: ${fmtMoney(worstS[i])}\nBase: ${fmtMoney(baseS[i])}\nBest: ${fmtMoney(bestS[i])}`
+    ),
   });
 }
 
@@ -447,6 +454,9 @@ function renderCashFlowChart(results) {
     noi: base.years.map((y) => y.NOI),
     debtService: base.years.map((y) => y.debtService),
     netCF: base.years.map((y) => y.CFBT),
+    tooltips: base.years.map((y) =>
+      `Year ${y.t}\nNOI: ${fmtMoney(y.NOI)}\nDebt service: ${fmtMoney(y.debtService)}\nNet cash flow: ${fmtMoney(y.CFBT)}`
+    ),
   });
 }
 
@@ -551,8 +561,33 @@ function renderAssumptions() {
 }
 
 // ---------------------------------------------------------------------------
+// Chart tooltips — one delegated listener handles every chart, since chart
+// markup is replaced wholesale on each render() and per-element listeners
+// would need to be re-bound every time.
+// ---------------------------------------------------------------------------
+
+function initChartTooltips() {
+  const tip = document.getElementById('chartTooltip');
+  const place = (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    if (!target) { tip.hidden = true; return; }
+    tip.hidden = false;
+    tip.textContent = target.getAttribute('data-tooltip');
+    const margin = 14;
+    const x = Math.min(window.innerWidth - margin, Math.max(margin, e.clientX));
+    const y = Math.max(margin, e.clientY);
+    tip.style.left = `${x}px`;
+    tip.style.top = `${y}px`;
+  };
+  document.addEventListener('pointermove', place);
+  document.addEventListener('pointerdown', place);
+  document.addEventListener('scroll', () => { tip.hidden = true; }, true);
+}
+
+// ---------------------------------------------------------------------------
 
 bindInputs();
+initChartTooltips();
 document.getElementById('landTaxRecoverable').checked = state.landTaxRecoverable;
 syncInputsFromState();
 render();

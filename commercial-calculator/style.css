@@ -208,6 +208,17 @@ input[type="number"], select {
 .sw-base { background: var(--ink); }
 .sw-best { background: var(--best); }
 
+/* ---------------- chart tooltips ---------------- */
+[data-tooltip] { cursor: crosshair; }
+[data-tooltip]:hover { fill: rgba(0, 0, 0, 0.035); }
+.chart-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: var(--ink); color: #fff; font-family: var(--mono); font-size: 0.74rem; line-height: 1.6;
+  padding: 9px 12px; border-radius: 6px; box-shadow: 0 10px 24px rgba(0, 0, 0, .28);
+  white-space: pre; transform: translate(-50%, -100%); margin-top: -12px; max-width: 260px;
+}
+.chart-tooltip[hidden] { display: none; }
+
 .chart-label { font-family: var(--mono); font-size: 9px; fill: var(--grey); }
 .chart-label-bold { font-family: var(--mono); font-size: 10px; font-weight: 700; fill: var(--ink); }
 .chart-cell-label { font-family: var(--mono); font-size: 10px; fill: #fff; font-weight: 600; }
